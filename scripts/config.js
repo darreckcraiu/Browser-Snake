@@ -1,7 +1,7 @@
-//use the parameters saved on local storage if they exist
+//use the parameters saved on local storage if they exist and if not use the search bar parameters
 const savedParams = localStorage.getItem("savedParams");
 const params = new URLSearchParams(
-  savedParams !== null ? savedParams : window.location.search
+  (savedParams !== null && savedParams !== "null") ? savedParams : window.location.search
 )
 
 export const rows = getValidNumber("rows", 15);
