@@ -2,107 +2,16 @@
 <html>
   <head>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-
+    <link rel="stylesheet" href="styles/styles.css" />
     <title>Snake</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        height: 100vh; /* full window height */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: rgb(5, 41, 43);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      }
-
-      .game-container {
-        display: flex;
-        flex-direction: column;
-        position: relative; /* allow overlaying stuff later */
-        width: fit-content;
-        height: fit-content;
-      }
-
-      .endscreen {
-        position: absolute; /* position it relative to .game-container */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        
-        background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
-      
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        
-        color: white;
-        font-size: 50px;
-        font-weight: bold;
-        
-        z-index: 10; /* make sure it is above the game grid */
-      
-        display: none; /* start hidden */
-      }
-
-      .endscreen-content {
-        text-align: center;
-      }
-
-      #retry-button {
-        margin-top: 10px;
-        padding: 10px 20px;
-        font-size: 25px;
-        font-weight: bold;
-        background-color: rgb(15, 182, 0);
-        color: black;
-        border: 2px solid rgba(255, 255, 255, 0.5);
-        border-radius: 16px;
-        cursor: pointer;
-      }
-
-      #retry-button:hover {
-        background-color: rgb(17, 204, 0);
-      }
-
-      .header-text {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid rgba(118, 250, 255, 0.44);
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        text-align: center;
-        font-size: 40px;
-        font-weight: bold;
-        color: white;
-        background-color: rgb(20, 20, 20);
-        z-index: 20; /* even higher than the endscreen */
-        pointer-events: none; /* so it doesn't block clicks */
-      }
-
-      #score {
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-
-      #highscore {
-        color: rgb(255, 238, 0);
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-    </style>
   </head>
-  <body>    
+
+  <body>
+    <button id="settings-button">Settings</button>
+
+
     <div class="game-container">
-      <div class="header-text">
+      <div class="top-overlay">
         <p id="score">SCORE: 1</p>
         <p id="highscore">HIGHSCORE: 5</p>
       </div>
@@ -116,6 +25,8 @@
         </div>
       </div>
     </div>
+
+
 
     <script src="scripts/config.js" type="module"></script>
     <script src="scripts/gameloop.js" type="module"></script>
