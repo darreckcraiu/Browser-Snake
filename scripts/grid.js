@@ -11,23 +11,39 @@ function scaleEndscreenFont() {
 }
 
 /**
- * Scale the retry and settings button font size and attach click event listeners.
+ * Apply a shared font size to all buttons with the "button" class,
+ * and attach individual event listeners to specific buttons.
  */
 function setupButtons() {
+  // Set font size for all buttons with class="button"
+  const allButtons = document.getElementsByClassName('button');
+  for (let i = 0; i < allButtons.length; i++) {
+    allButtons[i].style.fontSize = `${gameContainerStyles.width / 28}px`;
+  }
+
+  // Individual behavior for retry button
   const retryButton = document.getElementById('retry-button');
-  retryButton.style.fontSize = `${gameContainerStyles.width / 28}px`;
   retryButton.addEventListener('click', () => {
     location.reload();
   });
 
+  // Individual behavior for settings button
   const settingsButton = document.getElementById('settings-button');
-  settingsButton.style.fontSize = `${gameContainerStyles.width / 28}px`;
   settingsButton.addEventListener('click', () => {
-    const settingsScreen = document.getElementsByClassName('settings-screen')[0];
-    const isHidden = settingsScreen.style.display === "none" || settingsScreen.style.display === "";
-    settingsScreen.style.display = isHidden ? "block" : "none";
+    const settingsScreen = document.querySelector('.settings-screen');
+    settingsScreen.classList.toggle('hidden');
+    console.log('clap');
+    console.log('Toggled:', settingsScreen.classList.contains('hidden'));
+  });
+
+  // for RESET HIGHSCORE button
+  const highscoreButton = document.getElementById('reset-highscore-button');
+  highscoreButton.addEventListener('click', () => {
+    localStorage.setItem('highscore', 1);
+    location.reload();
   });
 }
+
 
 /**
  * Scale the font size of the SCORE and HIGHSCORE text.
