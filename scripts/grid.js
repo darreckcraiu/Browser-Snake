@@ -73,8 +73,8 @@ function syncSliderWithTextbox(sliderId, textboxId) {
 function setDefaultSliderAndTextbox() {
   document.getElementById('rows-slider').value = rows;
   document.getElementById('rows-slider-textbox').value = rows;
-  document.getElementById('cols-slider').value = rows;
-  document.getElementById('cols-slider-textbox').value = rows;
+  document.getElementById('cols-slider').value = cols;
+  document.getElementById('cols-slider-textbox').value = cols;
 }
 
 /**
