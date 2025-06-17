@@ -9,24 +9,115 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.game-container {
+.center-panel {
   display: flex;
   flex-direction: column;
-  position: relative; /* allow overlaying stuff later */
-  width: fit-content;
-  height: fit-content;
+  position: relative; /*will position its children relative to itself*/
+}
+
+.top-panel,
+.bottom-panel,
+.left-panel,
+.right-panel {
+  position: absolute;
+}
+
+.top-panel {
+  top: -3px;
+  transform: translateY(-100%);
+  width: 100%;
+  height: 17%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(118, 250, 255, 0.44);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(20, 20, 20);
+  z-index: 20; /* higher than the endscreen */
+  pointer-events: none; /* so it doesn't block clicks */
+}
+
+#score {
+  margin-left: 5%;
+}
+
+#highscore {
+  color: rgb(255, 238, 0);
+  margin-right: 5%;
+}
+
+.bottom-panel {
+  bottom: -3px;
+  transform: translateY(100%);
+  
+  width: 100%;
+  height: 12%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(118, 250, 255, 0.44);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  background-color: rgb(20, 20, 20);
+  z-index: 20; /* higher than the endscreen */
+}
+
+.left-panel {
+  top: 0px;
+  transform: translateX(-100%);
+  left: -3px;
+
+  width: 50px;
+  height: 100%;
+}
+
+.right-panel {
+  top: 0px;
+  right: 0px;
+  transform: translateX(100%);
+  right: -3px;
+
+  width: 50px;
+  height: 100%;
 }
 
 .endscreen {
-  position: absolute; /* position it relative to .game-container */
+  position: absolute; /* position it relative to .center-panel */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
   
   background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  color: white;
+  font-size: 50px;
+  font-weight: bold;
+  
+  z-index: 10; /* make sure it is above the game grid */
+
+  display: none; /* start hidden */
+}
+
+.settings-screen {
+  position: absolute; /* position it relative to .center-panel */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-color: rgba(0, 0, 0, 0.9); /* semi-transparent black */
 
   display: flex;
   justify-content: center;
@@ -62,7 +153,26 @@ body {
 }
 
 #settings-button {
-  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: rgb(15, 182, 0);
+  color: black;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+#settings-button:hover {
+  background-color: rgb(17, 204, 0);
+}
+
+#rows-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 10px 20px;
   font-size: 25px;
   font-weight: bold;
@@ -71,39 +181,42 @@ body {
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
   cursor: pointer;
+  z-index: 20;
 }
 
-#settings-button:hover {
+#rows-button:hover {
   background-color: rgb(17, 204, 0);
 }
 
-.top-overlay {
+#cols-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: rgb(15, 182, 0);
+  color: black;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+#cols-button:hover {
+  background-color: rgb(17, 204, 0);
+}
+
+.bottom-panel {
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid rgba(118, 250, 255, 0.44);
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   text-align: center;
   font-size: 40px;
   font-weight: bold;
   color: white;
   background-color: rgb(20, 20, 20);
   z-index: 20; /* higher than the endscreen */
-  pointer-events: none; /* so it doesn't block clicks */
-}
-
-#score {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-#highscore {
-  color: rgb(255, 238, 0);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }

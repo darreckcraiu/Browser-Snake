@@ -10,8 +10,8 @@ export const snakeArrSize = 500;
 export const snakeColor = 'rgb(145, 255, 123)';
 export const foodColor = 'rgb(255, 123, 123)';
 export const gameContainerStyles = {
-  width: 700,
-  height: 700
+  width: 500,
+  height: 500
 }
 export const cellStyles = {
   color: 'rgb(24, 24, 24)',

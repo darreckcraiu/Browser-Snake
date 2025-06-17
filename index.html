@@ -7,25 +7,40 @@
   </head>
 
   <body>
-    <button id="settings-button">Settings</button>
+      <div class="center-panel">
+        <div class="game-grid"><!-- This inner html is calculated upon website loading from grid.js --></div>
 
+        <div class="top-panel">
+          <p id="score">SCORE: 1</p>
+          <p id="highscore">HIGHSCORE: 5</p>
+        </div>
 
-    <div class="game-container">
-      <div class="top-overlay">
-        <p id="score">SCORE: 1</p>
-        <p id="highscore">HIGHSCORE: 5</p>
-      </div>
+        <div class="bottom-panel">
+          <button id="settings-button">Settings</button>
+        </div>
 
-      <div class="game-grid"><!-- This inner html is calculated upon website loading from grid.js --></div>
+        <div class="left-panel">
 
-      <div class="endscreen">
-        <div class="endscreen-content">
-          <p>GAME OVER</p>
-          <button id="retry-button">Play Again</button>
+        </div>
+
+        <div class="right-panel">
+
+        </div>
+
+        <div class="endscreen">
+          <div class="endscreen-content">
+            <p>GAME OVER</p>
+            <button id="retry-button">Play Again</button>
+          </div>
+        </div>
+
+        <div class="settings-screen">
+          <button id="rows-button">rows</button>
+          <button id="cols-button">cols</button>
         </div>
       </div>
-    </div>
 
+    </div>
 
 
     <script src="scripts/config.js" type="module"></script>

@@ -1,23 +1,29 @@
-import { rows, cols, cellStyles,  gridBorderColor, gameContainerStyles } from "./config.js";
+import { rows, cols, cellStyles, gameContainerStyles } from "./config.js";
 
 //scale font of GAMEOVER
-const endscreen = document.querySelector('.endscreen');
-endscreen.style.fontSize = `${gameContainerStyles.width / 14}px`;
+let temp = document.querySelector('.endscreen');
+temp.style.fontSize = `${gameContainerStyles.width / 14}px`;
 
-//scale font of Play Again
-const retryButton = document.getElementById('retry-button');
-retryButton.style.fontSize = `${gameContainerStyles.width / 28}px`;
-retryButton.addEventListener('click', () => {
+//scale button fonts and add event listeners
+temp = document.getElementById('retry-button');
+temp.style.fontSize = `${gameContainerStyles.width / 28}px`;
+temp.addEventListener('click', () => {
   location.reload();
+});
+temp = document.getElementById('settings-button');
+temp.style.fontSize = `${gameContainerStyles.width / 28}px`;
+temp.addEventListener('click', () => {
+  const element = document.getElementsByClassName('settings-screen')[0];
+  element.style.display = (element.style.display === "none" || element.style.display === "") ? "block" : "none";
 });
 
 //scale font of SCORE
-const score = document.getElementById('score');
-score.style.fontSize = `${gameContainerStyles.width / 16}px`;
+temp = document.getElementById('score');
+temp.style.fontSize = `${gameContainerStyles.width / 16}px`;
 
 //scale font of HIGHSCORE
-const highscoreText = document.getElementById('highscore');
-highscoreText.style.fontSize = `${gameContainerStyles.width / 16}px`;
+temp = document.getElementById('highscore');
+temp.style.fontSize = `${gameContainerStyles.width / 16}px`;
 
 export default class Grid {
   array = []; // will be a 2D array of IDs like "0_0", "0_1", etc. 
