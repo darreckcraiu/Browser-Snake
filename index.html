@@ -36,23 +36,36 @@
 
         <div class="settings-screen hidden">
           <div class="rows-cols-div">
-            <button class="button" id="rows-button">rows</button>
+            <button class="button label-button" id="rows-button">rows</button>
             <div class="slider-textbox-div">
               <input type="range" id="rows-slider" min="5" max="100" value="12" step="1">
               <input type="text" id="rows-slider-textbox" placeholder="0">
             </div>
           </div>
-
-          <div class="rows-cols-div" style="margin-bottom: 10%;">
-            <button class="button" id="cols-button">cols</button>
+          <div class="rows-cols-div">
+            <button class="button label-button" id="cols-button">cols</button>
             <div class="slider-textbox-div">
               <input type="range" id="cols-slider" min="5" max="100" value="12" step="1">
               <input type="text" id="cols-slider-textbox" placeholder="0">
             </div>
           </div>
+          <div class="rows-cols-div">
+            <button class="button label-button" id="UI-width-button">UI Width</button>
+            <div class="slider-textbox-div">
+              <input type="range" id="UI-width-slider" min="100" max="1000" value="650" step="1">
+              <input type="text" id="UI-width-slider-textbox" placeholder="0">
+            </div>
+          </div>
+          <div class="rows-cols-div">
+            <button class="button label-button" id="UI-height-button">UI Height</button>
+            <div class="slider-textbox-div">
+              <input type="range" id="UI-height-slider" min="100" max="1000" value="650" step="1">
+              <input type="text" id="UI-height-slider-textbox" placeholder="0">
+            </div>
+          </div>
 
-          <button class="button update-grid-button">Update Grid</button>
-          
+          <button class="button apply-changes-button">Apply Changes</button>
+          <button class="button reset-to-default-button">Reset to Default</button>
           <button class="button" id="reset-highscore-button">RESET HIGHSCORE</button>
         </div>
       </div>

@@ -34,6 +34,7 @@ function setupButtons() {
     settingsScreen.classList.toggle('hidden');
     console.log('clap');
     console.log('Toggled:', settingsScreen.classList.contains('hidden'));
+    settingsButton.textContent = settingsButton.textContent == 'Settings' ? 'BACK' : 'Settings';
   });
 
   // for RESET HIGHSCORE button
@@ -44,14 +45,28 @@ function setupButtons() {
   });
 
   // for Update Grid button
-  const updateGridButton = document.querySelector('.update-grid-button');
-  updateGridButton.addEventListener('click', () => {
+  const applyChangesButton = document.querySelector('.apply-changes-button');
+  applyChangesButton.addEventListener('click', () => {
     //get the values from the rows and cols sliders and change the grid based on them
-    const rows = document.getElementById('rows-slider').value;
-    const cols = document.getElementById('cols-slider').value;
-    localStorage.setItem("savedParams", `?rows=${rows}&cols=${cols}`);
+    const rows = Number(document.getElementById('rows-slider').value);
+    const cols = Number(document.getElementById('cols-slider').value);
+    const width = Number(document.getElementById('UI-width-slider').value);
+    const height = Number(document.getElementById('UI-height-slider').value);
+    localStorage.setItem('settings', JSON.stringify({
+      rows: rows,
+      cols: cols,
+      width: width,
+      height: height
+    }));
     location.reload();
-  });  
+  });
+
+  // for Reset Grid button
+  const resetToDefaultButton = document.querySelector('.reset-to-default-button');
+  resetToDefaultButton.addEventListener('click', () => {
+    localStorage.removeItem('settings');
+    location.reload();
+  });
 }
 
 function syncSliderWithTextbox(sliderId, textboxId) {
@@ -75,6 +90,10 @@ function setDefaultSliderAndTextbox() {
   document.getElementById('rows-slider-textbox').value = rows;
   document.getElementById('cols-slider').value = cols;
   document.getElementById('cols-slider-textbox').value = cols;
+  document.getElementById('UI-width-slider').value = gameContainerStyles.width;
+  document.getElementById('UI-width-slider-textbox').value = gameContainerStyles.width;
+  document.getElementById('UI-height-slider').value = gameContainerStyles.height;
+  document.getElementById('UI-height-slider-textbox').value = gameContainerStyles.height;
 }
 
 /**
@@ -97,6 +116,8 @@ function initializeUI() {
   scaleScoreFonts();
   syncSliderWithTextbox('rows-slider', 'rows-slider-textbox');
   syncSliderWithTextbox('cols-slider', 'cols-slider-textbox');
+  syncSliderWithTextbox('UI-width-slider', 'UI-width-slider-textbox');
+  syncSliderWithTextbox('UI-height-slider', 'UI-height-slider-textbox');
   setDefaultSliderAndTextbox();
 }
 

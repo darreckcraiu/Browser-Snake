@@ -1,18 +1,21 @@
-//use the parameters saved on local storage if they exist and if not use the search bar parameters
-const savedParams = localStorage.getItem("savedParams");
-const params = new URLSearchParams(
-  (savedParams !== null && savedParams !== "null") ? savedParams : window.location.search
-)
+//get settings from local storage and if it's null, get an empty object
+const settings = JSON.parse(localStorage.getItem("settings") || '{}');
 
-export const rows = getValidNumber("rows", 15);
-export const cols = getValidNumber("cols", 15);
+//default settings values
+const defaultRows = 12;
+const defaultCols = 12;
+const defaultWidth = 650;
+const defaultHeight = 650;
+
+export const rows = settings && Number(settings.rows) || defaultRows;
+export const cols = settings && Number(settings.cols) || defaultCols;
 export const snakeArrSize = 500;
 export const snakeColor = 'rgb(145, 255, 123)';
 export const foodColor = 'rgb(255, 123, 123)';
 export const gameContainerStyles = {
-  width: 700,
-  height: 700
-}
+  width: settings && Number(settings.width) || defaultWidth,
+  height: settings && Number(settings.height) || defaultHeight
+};
 export const cellStyles = {
   color: 'rgb(24, 24, 24)',
   border: '1px solid rgba(118, 250, 255, 0.44)'
@@ -20,15 +23,10 @@ export const cellStyles = {
 export const gridBorderColor = 'rgb(255, 255, 255)';
 export const gameloopInterval = 100;
 
-//returns a parameter if it is a number, else returns fallback
-function getValidNumber(paramName, fallback) {
-  const value = params.get(paramName);
-  const num = Number(value);
-  return value !== null && !isNaN(num) ? num : fallback;
-}
-
-if (rows != 15 || cols != 15) {
-  localStorage.setItem(
-    "savedParams", 
-    `?rows=${rows}&cols=${cols}`);
-}
+//save settings to local storage
+localStorage.setItem('settings', JSON.stringify({
+  rows: rows,
+  cols: cols,
+  width: gameContainerStyles.width,
+  height: gameContainerStyles.height
+}));
