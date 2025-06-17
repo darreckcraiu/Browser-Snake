@@ -1,34 +1,61 @@
 import { rows, cols, cellStyles, gameContainerStyles } from "./config.js";
 
-//scale font of GAMEOVER
-let temp = document.querySelector('.endscreen');
-temp.style.fontSize = `${gameContainerStyles.width / 14}px`;
+/* ---------------------- UI SCALING FUNCTIONS ---------------------- */
 
-//scale button fonts and add event listeners
-temp = document.getElementById('retry-button');
-temp.style.fontSize = `${gameContainerStyles.width / 28}px`;
-temp.addEventListener('click', () => {
-  location.reload();
-});
-temp = document.getElementById('settings-button');
-temp.style.fontSize = `${gameContainerStyles.width / 28}px`;
-temp.addEventListener('click', () => {
-  const element = document.getElementsByClassName('settings-screen')[0];
-  element.style.display = (element.style.display === "none" || element.style.display === "") ? "block" : "none";
-});
+/**
+ * Set the font size of the "GAME OVER" screen dynamically based on container width.
+ */
+function scaleEndscreenFont() {
+  const endscreen = document.querySelector('.endscreen');
+  endscreen.style.fontSize = `${gameContainerStyles.width / 14}px`;
+}
 
-//scale font of SCORE
-temp = document.getElementById('score');
-temp.style.fontSize = `${gameContainerStyles.width / 16}px`;
+/**
+ * Scale the retry and settings button font size and attach click event listeners.
+ */
+function setupButtons() {
+  const retryButton = document.getElementById('retry-button');
+  retryButton.style.fontSize = `${gameContainerStyles.width / 28}px`;
+  retryButton.addEventListener('click', () => {
+    location.reload();
+  });
 
-//scale font of HIGHSCORE
-temp = document.getElementById('highscore');
-temp.style.fontSize = `${gameContainerStyles.width / 16}px`;
+  const settingsButton = document.getElementById('settings-button');
+  settingsButton.style.fontSize = `${gameContainerStyles.width / 28}px`;
+  settingsButton.addEventListener('click', () => {
+    const settingsScreen = document.getElementsByClassName('settings-screen')[0];
+    const isHidden = settingsScreen.style.display === "none" || settingsScreen.style.display === "";
+    settingsScreen.style.display = isHidden ? "block" : "none";
+  });
+}
+
+/**
+ * Scale the font size of the SCORE and HIGHSCORE text.
+ */
+function scaleScoreFonts() {
+  const score = document.getElementById('score');
+  score.style.fontSize = `${gameContainerStyles.width / 16}px`;
+
+  const highscore = document.getElementById('highscore');
+  highscore.style.fontSize = `${gameContainerStyles.width / 16}px`;
+}
+
+/**
+ * Initialize all UI element scaling and listeners.
+ */
+function initializeUI() {
+  scaleEndscreenFont();
+  setupButtons();
+  scaleScoreFonts();
+}
+
+/* ---------------------- GRID CLASS ---------------------- */
 
 export default class Grid {
-  array = []; // will be a 2D array of IDs like "0_0", "0_1", etc. 
+  array = []; // 2D array of cell IDs (e.g., "0_0", "0_1", ...)
 
   constructor() {
+    // Populate the 2D array with unique ID strings
     for (let i = 0; i < rows; i++) {
       this.array[i] = [];
       for (let j = 0; j < cols; j++) {
@@ -37,32 +64,31 @@ export default class Grid {
     }
   }
 
+  /**
+   * Create and style the game grid.
+   */
   setupGrid() {
-    const temp = document.querySelector('.game-grid');
-  
-    // Apply grid container styles
-    Object.assign(temp.style, {
+    const container = document.querySelector('.game-grid');
+
+    // Apply container styles
+    Object.assign(container.style, {
       display: 'grid',
       width: `${gameContainerStyles.width}px`,
       height: `${gameContainerStyles.height}px`,
       gridTemplateRows: `repeat(${rows}, 1fr)`,
-      gridTemplateColumns: `repeat(${cols}, 1fr)`,
-      //border: '1px solid rgb(0, 0, 0)'
+      gridTemplateColumns: `repeat(${cols}, 1fr)`
     });
-    
-    // Create cells
+
+    // Generate grid cell HTML
     let gridHTML = '';
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        gridHTML += 
-        `
-        <div id="${this.array[i][j]}" class="js-grid-cell"></div>    
-        `;
+        gridHTML += `<div id="${this.array[i][j]}" class="js-grid-cell"></div>`;
       }
     }
-    temp.innerHTML = gridHTML;
+    container.innerHTML = gridHTML;
 
-    // Apply styles to each cell
+    // Apply styles to each grid cell
     const cells = document.querySelectorAll('.js-grid-cell');
     cells.forEach(cell => {
       Object.assign(cell.style, {
@@ -72,3 +98,6 @@ export default class Grid {
     });
   }
 }
+
+/* ---------------------- RUN INITIALIZATION ---------------------- */
+initializeUI();
