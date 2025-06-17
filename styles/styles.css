@@ -123,7 +123,7 @@ body {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   
   color: white;
@@ -131,6 +131,48 @@ body {
   font-weight: bold;
   
   z-index: 10; /* make sure it is above the game grid */
+}
+
+.rows-cols-div {
+  display: flex;
+  justify-content: horizontal;
+}
+
+.rows-cols-div button {
+  margin-left: auto;
+}
+
+.slider-textbox-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#rows-slider-textbox,
+#cols-slider-textbox {
+  width: 8%;
+  height: 30%;
+  text-align: center;
+}
+
+.settings-screen button {
+  margin: 5px;
+}
+
+#rows-button,
+#cols-button {
+  margin-right: 10%;
+}
+
+#reset-highscore-button {
+  margin-top: auto;
+  margin-bottom: 10%;
+  color: rgb(219, 219, 219);
+  background-color: rgb(163, 0, 0);
+}
+
+#reset-highscore-button:hover {
+  background-color: rgb(211, 0, 0);
 }
 
 .endscreen-content {

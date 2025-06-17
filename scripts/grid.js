@@ -42,8 +42,40 @@ function setupButtons() {
     localStorage.setItem('highscore', 1);
     location.reload();
   });
+
+  // for Update Grid button
+  const updateGridButton = document.querySelector('.update-grid-button');
+  updateGridButton.addEventListener('click', () => {
+    //get the values from the rows and cols sliders and change the grid based on them
+    const rows = document.getElementById('rows-slider').value;
+    const cols = document.getElementById('cols-slider').value;
+    localStorage.setItem("savedParams", `?rows=${rows}&cols=${cols}`);
+    location.reload();
+  });  
 }
 
+function syncSliderWithTextbox(sliderId, textboxId) {
+  const slider = document.getElementById(sliderId);
+  const textbox = document.getElementById(textboxId);
+
+  slider.addEventListener('input', () => {
+    textbox.value = slider.value;
+  })
+
+  textbox.addEventListener('input', () => {
+    const num = parseInt(textbox.value, 10); //treat the number as base 10
+    if (!isNaN(num) && num >= slider.min && num <= slider.max) {
+      slider.value = num;
+    }
+  })
+}
+
+function setDefaultSliderAndTextbox() {
+  document.getElementById('rows-slider').value = rows;
+  document.getElementById('rows-slider-textbox').value = rows;
+  document.getElementById('cols-slider').value = rows;
+  document.getElementById('cols-slider-textbox').value = rows;
+}
 
 /**
  * Scale the font size of the SCORE and HIGHSCORE text.
@@ -63,6 +95,9 @@ function initializeUI() {
   scaleEndscreenFont();
   setupButtons();
   scaleScoreFonts();
+  syncSliderWithTextbox('rows-slider', 'rows-slider-textbox');
+  syncSliderWithTextbox('cols-slider', 'cols-slider-textbox');
+  setDefaultSliderAndTextbox();
 }
 
 /* ---------------------- GRID CLASS ---------------------- */
