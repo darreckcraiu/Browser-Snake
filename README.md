@@ -1,1 +1,1 @@
-Play snake in your browser
+Play the classic game of Snake in your browser. Controls are WASD. The row number, column number, UI width, and UI height can all be adjusted in the settings menu. The highscore can also be reset there.
