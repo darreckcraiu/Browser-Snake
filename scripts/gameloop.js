@@ -3,7 +3,8 @@ import Grid from "./grid.js";
 import Snake from "./snake.js";
 import { coordToString } from "./utils.js";
 
-const highscore = localStorage.getItem('highscore');
+const highscore = localStorage.getItem('highscore') !== null ?
+localStorage.getItem('highscore') : 1;
 document.getElementById('highscore').innerText = `HIGHSCORE: ${highscore}`;
 
 const grid = new Grid(); //create grid
