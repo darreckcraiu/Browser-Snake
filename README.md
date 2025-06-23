@@ -1,4 +1,4 @@
-#Browser-Snake
+# Browser-Snake
 
 Play the classic game of Snake in your browser. 
 Control the snake with WASD or ↑←↓→. 
