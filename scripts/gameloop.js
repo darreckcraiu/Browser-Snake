@@ -85,6 +85,7 @@ setInterval(() => {
   }
 
   //calculate next head and whether it kills the snake or not
+  snake.dir = snake.nextDir;
   temp = snake.calculateNextHead();
   if (snake.inSet(temp)) {
     snake.alive = false;
@@ -145,42 +146,16 @@ document.addEventListener('keydown', (event) => {
 });
 //keys to move the snake
 document.addEventListener('keydown', (event) => {
-  if (!hasMovedThisFrame) {
-    if (event.key.toLowerCase() === 'w') {
-      if (snake.dir.y !== 1) {
-        snake.dir = { y: -1, x: 0 };
-        hasMovedThisFrame = true;
-      }
-    } 
-  }
-});
-document.addEventListener('keydown', (event) => {
-  if (!hasMovedThisFrame) {
-    if (event.key.toLowerCase() === 'a') {
-      if (snake.dir.x !== 1) {
-        snake.dir = { y: 0, x: -1 };
-        hasMovedThisFrame = true;
-      }
-    } 
-  }
-});
-document.addEventListener('keydown', (event) => {
-  if (!hasMovedThisFrame) {
-    if (event.key.toLowerCase() === 's') {
-      if (snake.dir.y !== -1) {
-        snake.dir = { y: 1, x: 0 };
-        hasMovedThisFrame = true;
-      }
-    } 
-  }
-});
-document.addEventListener('keydown', (event) => {
-  if (!hasMovedThisFrame) {
-    if (event.key.toLowerCase() === 'd') {
-      if (snake.dir.x !== -1) {
-        snake.dir = { y: 0, x: 1 };
-        hasMovedThisFrame = true;
-      }
-    } 
+  const key = event.key.toLowerCase();
+  const currentDir = snake.dir;
+
+  if ((key === 'w' || event.key === 'ArrowUp') && currentDir.y !== 1) {
+    snake.nextDir = { x: 0, y: -1 };
+  } else if ((key === 's' || event.key === 'ArrowDown') && currentDir.y !== -1) {
+    snake.nextDir = { x: 0, y: 1 };
+  } else if ((key === 'a' || event.key === 'ArrowLeft') && currentDir.x !== 1) {
+    snake.nextDir = { x: -1, y: 0 };
+  } else if ((key === 'd' || event.key === 'ArrowRight') && currentDir.x !== -1) {
+    snake.nextDir = { x: 1, y: 0 };
   }
 });

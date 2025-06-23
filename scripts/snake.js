@@ -7,6 +7,7 @@ export default class Snake {
   coordsArr = Array.from({ length: snakeArrSize }, () => ({ y: 0, x: 0 }));
 
   dir = {y: 0, x: 0};
+  nextDir = {y: 0, x: 0};
   headIndex = 0;
   tailIndex = 0;
   score = 1;
