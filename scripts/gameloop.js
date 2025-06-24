@@ -147,6 +147,9 @@ document.addEventListener('keydown', (event) => {
 
 //Event listeners for either desktop or mobile
 if (isTouchDevice()) {
+  console.log('Is touch device');
+  console.log("Viewport width:", window.innerWidth);
+  
   // Only add event listeners for mobile
   document.getElementById('up').addEventListener('click', () => {
     const currentDir = snake.dir;
@@ -170,6 +173,12 @@ if (isTouchDevice()) {
   });
 }
 else {
+  console.log('Is NOT touch device');
+  console.log("Viewport width:", window.innerWidth);
+
+  //Hide dpad from screen
+  document.querySelector('.hidden-on-desktop').style.display = 'none';
+
   document.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
     const currentDir = snake.dir;
