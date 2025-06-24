@@ -1,7 +1,7 @@
 import { rows,cols, snakeArrSize, gameloopInterval, foodColor } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordToString } from "./utils.js";
+import { coordToString, isTouchDevice } from "./utils.js";
 
 const highscore = localStorage.getItem('highscore') !== null ?
 localStorage.getItem('highscore') : 1;
@@ -144,18 +144,44 @@ document.addEventListener('keydown', (event) => {
       localStorage.setItem('highscore', `${snake.score}`);
   }
 });
-//keys to move the snake
-document.addEventListener('keydown', (event) => {
-  const key = event.key.toLowerCase();
-  const currentDir = snake.dir;
 
-  if ((key === 'w' || event.key === 'ArrowUp') && currentDir.y !== 1) {
-    snake.nextDir = { x: 0, y: -1 };
-  } else if ((key === 's' || event.key === 'ArrowDown') && currentDir.y !== -1) {
-    snake.nextDir = { x: 0, y: 1 };
-  } else if ((key === 'a' || event.key === 'ArrowLeft') && currentDir.x !== 1) {
-    snake.nextDir = { x: -1, y: 0 };
-  } else if ((key === 'd' || event.key === 'ArrowRight') && currentDir.x !== -1) {
-    snake.nextDir = { x: 1, y: 0 };
-  }
-});
+//Event listeners for either desktop or mobile
+if (isTouchDevice()) {
+  // Only add event listeners for mobile
+  document.getElementById('up').addEventListener('click', () => {
+    const currentDir = snake.dir;
+    if (currentDir.y !== 1)
+      snake.nextDir = { x: 0, y: -1 };
+  });
+  document.getElementById('down').addEventListener('click', () => {
+    const currentDir = snake.dir;
+    if (currentDir.y !== -1)
+      snake.nextDir = { x: 0, y: 1 };
+  });
+  document.getElementById('left').addEventListener('click', () => {
+    const currentDir = snake.dir;
+    if (currentDir.x !== 1)
+      snake.nextDir = { x: -1, y: 0 };
+  });
+  document.getElementById('right').addEventListener('click', () => {
+    const currentDir = snake.dir;
+    if (currentDir.x !== -1)
+      snake.nextDir = { x: 1, y: 0 };
+  });
+}
+else {
+  document.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase();
+    const currentDir = snake.dir;
+
+    if ((key === 'w' || event.key === 'ArrowUp') && currentDir.y !== 1) {
+      snake.nextDir = { x: 0, y: -1 };
+    } else if ((key === 's' || event.key === 'ArrowDown') && currentDir.y !== -1) {
+      snake.nextDir = { x: 0, y: 1 };
+    } else if ((key === 'a' || event.key === 'ArrowLeft') && currentDir.x !== 1) {
+      snake.nextDir = { x: -1, y: 0 };
+    } else if ((key === 'd' || event.key === 'ArrowRight') && currentDir.x !== -1) {
+      snake.nextDir = { x: 1, y: 0 };
+    }
+  });
+}
