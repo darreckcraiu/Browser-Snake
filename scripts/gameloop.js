@@ -1,7 +1,7 @@
 import { rows,cols, snakeArrSize, gameloopInterval, foodColor } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordToString, isTouchDevice } from "./utils.js";
+import { coordToString, handleDirection, isTouchDevice } from "./utils.js";
 
 const highscore = localStorage.getItem('highscore') !== null ?
 localStorage.getItem('highscore') : 1;
@@ -146,51 +146,69 @@ document.addEventListener('keydown', (event) => {
 });
 
 //Event listeners for either desktop or mobile
-if (isTouchDevice()) {
-  console.log('Is touch device');
-  console.log("Viewport width:", window.innerWidth);
-  
-  // Only add event listeners for mobile
+if (isTouchDevice()) { 
+  //Event listeners for dpad
   document.getElementById('up').addEventListener('click', () => {
-    const currentDir = snake.dir;
-    if (currentDir.y !== 1)
-      snake.nextDir = { x: 0, y: -1 };
+    handleDirection('upDir', snake.dir, snake);
   });
   document.getElementById('down').addEventListener('click', () => {
-    const currentDir = snake.dir;
-    if (currentDir.y !== -1)
-      snake.nextDir = { x: 0, y: 1 };
+    handleDirection('downDir', snake.dir, snake);
   });
   document.getElementById('left').addEventListener('click', () => {
-    const currentDir = snake.dir;
-    if (currentDir.x !== 1)
-      snake.nextDir = { x: -1, y: 0 };
+    handleDirection('leftDir', snake.dir, snake);
   });
   document.getElementById('right').addEventListener('click', () => {
-    const currentDir = snake.dir;
-    if (currentDir.x !== -1)
-      snake.nextDir = { x: 1, y: 0 };
+    handleDirection('rightDir', snake.dir, snake);
   });
+
+  //Event listeners for swipe controls
+  let touchStartX = 0;
+  let touchStartY = 0; 
+
+  document.addEventListener('touchstart', function (e) {
+    const touch = e.changedTouches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  }, false);
+
+  document.addEventListener('touchend', function (e) {
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 30) {
+        handleDirection('rightDir', snake.dir, snake);
+      } else if (deltaX < -30) {
+        handleDirection('leftDir', snake.dir, snake);
+      }
+    } else {
+      if (deltaY > 30) {
+        handleDirection('downDir', snake.dir, snake);
+      } else if (deltaY < -30) {
+        handleDirection('upDir', snake.dir, snake);
+      }
+    }
+  }, false);
+  
 }
 else {
-  console.log('Is NOT touch device');
-  console.log("Viewport width:", window.innerWidth);
-
   //Hide dpad from screen
   document.querySelector('.hidden-on-desktop').style.display = 'none';
 
+  //Event listener for wasd and arrow keys
   document.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
     const currentDir = snake.dir;
 
-    if ((key === 'w' || event.key === 'ArrowUp') && currentDir.y !== 1) {
-      snake.nextDir = { x: 0, y: -1 };
-    } else if ((key === 's' || event.key === 'ArrowDown') && currentDir.y !== -1) {
-      snake.nextDir = { x: 0, y: 1 };
-    } else if ((key === 'a' || event.key === 'ArrowLeft') && currentDir.x !== 1) {
-      snake.nextDir = { x: -1, y: 0 };
-    } else if ((key === 'd' || event.key === 'ArrowRight') && currentDir.x !== -1) {
-      snake.nextDir = { x: 1, y: 0 };
+    if ((key === 'w' || event.key === 'ArrowUp')) {
+      handleDirection('upDir', currentDir, snake);
+    } else if (key === 's' || event.key === 'ArrowDown') {
+      handleDirection('downDir', currentDir, snake);
+    } else if (key === 'a' || event.key === 'ArrowLeft') {
+      handleDirection('leftDir', currentDir, snake);
+    } else if (key === 'd' || event.key === 'ArrowRight') {
+      handleDirection('rightDir', currentDir, snake);
     }
   });
 }
