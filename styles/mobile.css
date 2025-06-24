@@ -1,7 +1,7 @@
 #mobile-controls {
-  position: fixed;
-  bottom: 5%;
-  right: 5%;
+  position: absolute;
+  bottom: -50%;
+  transform: translateX(120%);
   display: flex;
   flex-direction: column;
   align-items: center;
