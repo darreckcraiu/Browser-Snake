@@ -21,7 +21,7 @@ export const cellStyles = {
   border: '1px solid rgba(118, 250, 255, 0.44)'
 }
 export const gridBorderColor = 'rgb(255, 255, 255)';
-export const gameloopInterval = 100;
+export const gameloopInterval = window.innerWidth > 1000 ? 120 : 150;
 
 //save settings to local storage
 localStorage.setItem('settings', JSON.stringify({
