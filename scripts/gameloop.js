@@ -213,7 +213,6 @@ if (window.innerWidth < 1000) {
     knob.style.top = "50%";
   });
 
-  /*
   //Event listeners for swipe controls
   let touchStartX = 0;
   let touchStartY = 0; 
@@ -243,7 +242,7 @@ if (window.innerWidth < 1000) {
       }
     }
   }, false);
-  */
+  
 }
 else {
   //Hide joystic from screen
