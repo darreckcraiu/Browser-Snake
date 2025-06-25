@@ -1,7 +1,7 @@
 import { rows,cols, snakeArrSize, gameloopInterval, foodColor } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordToString, handleDirection, isTouchDevice } from "./utils.js";
+import { coordToString, handleDirection } from "./utils.js";
 
 const highscore = localStorage.getItem('highscore') !== null ?
 localStorage.getItem('highscore') : 1;
@@ -145,22 +145,75 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-//Event listeners for either desktop or mobile
-if (isTouchDevice()) { 
-  //Event listeners for dpad
-  document.getElementById('up').addEventListener('click', () => {
-    handleDirection('upDir', snake.dir, snake);
-  });
-  document.getElementById('down').addEventListener('click', () => {
-    handleDirection('downDir', snake.dir, snake);
-  });
-  document.getElementById('left').addEventListener('click', () => {
-    handleDirection('leftDir', snake.dir, snake);
-  });
-  document.getElementById('right').addEventListener('click', () => {
-    handleDirection('rightDir', snake.dir, snake);
+//Event listeners for screens above or bellow 1000px in width
+if (window.innerWidth < 1000) { 
+  //Event listeners for joystick
+  const base = document.getElementById("joystick-base");
+  const knob = document.getElementById("joystick-knob");
+
+  function getCenterCoords() {
+    const rect = base.getBoundingClientRect();
+    return {
+      x: rect.width / 2,
+      y: rect.height / 2
+    };
+  }
+
+  let lastDirectionTime = 0;
+  const directionCooldown = 20; // milliseconds
+  
+  knob.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
+
+  knob.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    const baseRect = base.getBoundingClientRect();
+    const touchX = touch.clientX - baseRect.left;
+    const touchY = touch.clientY - baseRect.top;
+
+    const center = getCenterCoords();
+    const dx = touchX - center.x;
+    const dy = touchY - center.y;
+
+    const angle = Math.atan2(dy, dx);
+    const distance = Math.min(Math.hypot(dx, dy), baseRect.width / 3);
+
+    const offsetX = Math.cos(angle) * distance;
+    const offsetY = Math.sin(angle) * distance;
+
+    knob.style.left = `${center.x + offsetX}px`;
+    knob.style.top = `${center.y + offsetY}px`;
+
+    // Direction handling
+    const now = Date.now();
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (dx > 20 && now - lastDirectionTime > directionCooldown) {
+        handleDirection("rightDir", snake.dir, snake);
+        lastDirectionTime = now;
+      } else if (dx < -20 && now - lastDirectionTime > directionCooldown) {
+        handleDirection("leftDir", snake.dir, snake);
+        lastDirectionTime = now;
+      }
+    } else {
+      if (dy > 20 && now - lastDirectionTime > directionCooldown) {
+        handleDirection("downDir", snake.dir, snake);
+        lastDirectionTime = now;
+      } else if (dy < -20 && now - lastDirectionTime > directionCooldown) {
+        handleDirection("upDir", snake.dir, snake);
+        lastDirectionTime = now;
+      }
+    }
   });
 
+  knob.addEventListener("touchend", () => {
+    // Return to center using CSS centering method
+    knob.style.left = "50%";
+    knob.style.top = "50%";
+  });
+
+  /*
   //Event listeners for swipe controls
   let touchStartX = 0;
   let touchStartY = 0; 
@@ -190,10 +243,10 @@ if (isTouchDevice()) {
       }
     }
   }, false);
-  
+  */
 }
 else {
-  //Hide dpad from screen
+  //Hide joystic from screen
   document.querySelector('.hidden-on-desktop').style.display = 'none';
 
   //Event listener for wasd and arrow keys
