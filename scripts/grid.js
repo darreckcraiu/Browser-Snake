@@ -1,5 +1,10 @@
 import { rows, cols, cellStyles, gameContainerStyles } from "./config.js";
 
+//first set the width and height of the center panel to the same that the game grid will have
+const centerPanel = document.querySelector('.center-panel');
+centerPanel.style.height = gameContainerStyles.height;
+centerPanel.style.width = gameContainerStyles.width;
+
 /* ---------------------- UI SCALING FUNCTIONS ---------------------- */
 
 /**
@@ -31,10 +36,16 @@ function setupButtons() {
   const settingsButton = document.getElementById('settings-button');
   settingsButton.addEventListener('click', () => {
     const settingsScreen = document.querySelector('.settings-screen');
+    const multiplayerButton = document.getElementById('multiplayer-button');
+
+    // Toggle visibility of settings screen
     settingsScreen.classList.toggle('hidden');
-    console.log('clap');
-    console.log('Toggled:', settingsScreen.classList.contains('hidden'));
-    settingsButton.textContent = settingsButton.textContent == 'Settings' ? 'BACK' : 'Settings';
+
+    // Toggle button text
+    settingsButton.textContent = settingsButton.textContent === 'Settings' ? 'BACK' : 'Settings';
+
+    // Toggle visibility of multiplayer button
+    multiplayerButton.classList.toggle('hidden');
   });
 
   // for RESET HIGHSCORE button

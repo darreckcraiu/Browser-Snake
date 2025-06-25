@@ -145,8 +145,14 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-//Event listeners for screens above or bellow 1000px in width
-if (window.innerWidth < 1000) { 
+//Handle special cases for mobile vs desktop
+if (window.innerWidth < 1000) {
+  //hide for mobile
+  const toHide = document.querySelectorAll('.hidden-on-mobile');
+  toHide.forEach(element => {
+    element.style.display = 'none';
+  });
+
   //Event listeners for joystick
   const base = document.getElementById("joystick-base");
   const knob = document.getElementById("joystick-knob");
@@ -245,8 +251,11 @@ if (window.innerWidth < 1000) {
   
 }
 else {
-  //Hide joystic from screen
-  document.querySelector('.hidden-on-desktop').style.display = 'none';
+  //hide for desktop
+  const toHide = document.querySelectorAll('.hidden-on-desktop');
+  toHide.forEach(element => {
+    element.style.display = 'none';
+  });
 
   //Event listener for wasd and arrow keys
   document.addEventListener('keydown', (event) => {
