@@ -3,6 +3,12 @@ import Grid from "./grid.js";
 import Snake from "./snake.js";
 import { coordToString, handleDirection } from "./utils.js";
 
+//HIDE ALL ELEMENTS OF CLASS 'HIDDEN-ON-SINGLEPLAYER'
+const hideForSingle = document.querySelectorAll('.hidden-on-singleplayer');
+hideForSingle.forEach(element => {
+  element.style.display = 'none';
+});
+
 const highscore = localStorage.getItem('highscore') !== null ?
 localStorage.getItem('highscore') : 1;
 document.getElementById('highscore').innerText = `HIGHSCORE: ${highscore}`;

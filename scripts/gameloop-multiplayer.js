@@ -4,6 +4,12 @@ import Grid from "./grid.js";
 import Snake from "./snake.js";
 import { coordToString, handleDirection } from "./utils.js";
 
+//HIDE ALL ELEMENTS OF CLASS 'HIDDEN-ON-MULTIPLAYER'
+const hideForMulti = document.querySelectorAll('.hidden-on-multiplayer');
+hideForMulti.forEach(element => {
+  element.style.display = 'none';
+});
+
 const highscore = localStorage.getItem('highscore') !== null ?
 localStorage.getItem('highscore') : 1;
 document.getElementById('highscore').innerText = `HIGHSCORE: ${highscore}`;

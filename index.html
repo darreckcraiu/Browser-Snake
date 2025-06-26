@@ -13,31 +13,31 @@
         <div class="game-grid"><!-- This inner html is calculated upon website loading from grid.js --></div>
 
         <div class="top-panel">
-          <p id="score">SCORE: 1</p>
-          <p id="highscore">HIGHSCORE: 5</p>
+          <p id="score" class="hidden-on-multiplayer">SCORE: 1</p>
+          <p id="highscore" class="hidden-on-multiplayer">HIGHSCORE: 5</p>
         </div>
 
         <div class="bottom-panel">
-          <button class="button hidden-on-mobile" id="playermode-button">PLAY MULTIPLAYER</button>
-          <button class="button" id="settings-button">Settings</button>
+          <button id="playermode-button" class="button hidden-on-mobile">PLAY MULTIPLAYER</button>
+          <button id="settings-button" class="button" >Settings</button>
           <div id="mobile-controls" class="hidden-on-desktop">
            <div id="joystick-base"></div> 
            <div id="joystick-knob"></div>
           </div>
         </div>
 
-        <div class="left-panel hidden-on-mobile">
+        <div class="left-panel hidden-on-mobile hidden-on-singleplayer">
           <button class="button">COMING SOON</button>
         </div>
 
-        <div class="right-panel hidden-on-mobile">
+        <div class="right-panel hidden-on-mobile hidden-on-singleplayer">
           <button class="button">COMING SOON</button>
         </div>
 
         <div class="endscreen">
           <div class="endscreen-content">
             <p>GAME OVER</p>
-            <button class="button" id="retry-button">Play Again</button>
+            <button id="retry-button" class="button" >Play Again</button>
           </div>
         </div>
 
@@ -73,7 +73,7 @@
 
           <button class="button apply-changes-button">Apply Changes</button>
           <button class="button reset-to-default-button">Reset to Default</button>
-          <button class="button" id="reset-highscore-button">RESET HIGHSCORE</button>
+          <button id="reset-highscore-button" class="button hidden-on-multiplayer">RESET HIGHSCORE</button>
         </div>
       </div>
 
