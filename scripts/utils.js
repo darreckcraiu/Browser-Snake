@@ -1,5 +1,13 @@
+import { rows, cols } from "./config.js";
 export function coordToString(coord) {
   return `${coord.y}_${coord.x}`;
+}
+//returns a random coordinate that is valid with the rows and cols
+export function randomCoord() {
+  return {
+    y: Math.floor(Math.random() * (rows)),
+    x: Math.floor(Math.random() * (cols))
+  }
 }
 export function isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -15,4 +23,35 @@ export function handleDirection(arrowDir, currentDir, snake) {
     } else if (arrowDir === 'rightDir' && currentDir.x !== -1) {
       snake.nextDir = { x: 1, y: 0 };
     }
+}
+export function inSet(coord, set) {
+  coord = coordToString(coord);
+  return set.has(coord);
+}
+export function coordsEqual(coord1, coord2) {
+  return (coord1.y === coord2.y && coord1.x === coord2.x);
+}
+export function hideMobileElements() {
+  const toHide = document.querySelectorAll('.hidden-on-desktop');
+    toHide.forEach(element => {
+    element.style.display = 'none';
+  });
+}
+export function hideDesktopElements() {
+  const toHide = document.querySelectorAll('.hidden-on-mobile');
+    toHide.forEach(element => {
+    element.style.display = 'none';
+  });
+}
+export function hideSinglePlayerElements() {
+  const toHide = document.querySelectorAll('.hidden-on-multiplayer');
+    toHide.forEach(element => {
+    element.style.display = 'none';
+  });
+}
+export function hideMultiplayerElements() {
+  const toHide = document.querySelectorAll('.hidden-on-singleplayer');
+    toHide.forEach(element => {
+    element.style.display = 'none';
+  });
 }

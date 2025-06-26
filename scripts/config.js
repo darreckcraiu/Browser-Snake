@@ -1,6 +1,7 @@
 //get settings and certain other variables from localstorage
 const settings = JSON.parse(localStorage.getItem("settings") || '{}');
 export const playermode = localStorage.getItem('playermode') || 'SINGLEPLAYER'; //singleplayer is the default
+export const numOfPlayers = 2;
 
 //default settings values
 const defaultRows = 12;
@@ -22,7 +23,7 @@ export const cellStyles = {
   border: '1px solid rgba(118, 250, 255, 0.44)'
 }
 export const gridBorderColor = 'rgb(255, 255, 255)';
-export const gameloopInterval = window.innerWidth > 1000 ? 120 : 150;
+export const gameloopInterval = window.innerWidth > 1000 ? 100 : 150;
 
 //save settings to local storage
 localStorage.setItem('settings', JSON.stringify({
@@ -31,3 +32,10 @@ localStorage.setItem('settings', JSON.stringify({
   width: gameContainerStyles.width,
   height: gameContainerStyles.height
 }));
+
+export const playerControls = [
+  { up: 'w', down: 's', left: 'a', right: 'd' }, // Player 0 (WASD)
+  { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }, // Player 1 (arrowkeys)
+  { up: 'i', down: 'k', left: 'j', right: 'l' }, // Player 2 (IJKL)
+  { up: 't', down: 'f', left: 'g', right: 'h' } // Player 3 (TFGH)
+]; 

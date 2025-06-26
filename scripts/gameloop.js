@@ -1,7 +1,7 @@
 import { rows,cols, snakeArrSize, gameloopInterval, foodColor } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordToString, handleDirection } from "./utils.js";
+import { coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideDesktopElements } from "./utils.js";
 
 //HIDE ALL ELEMENTS OF CLASS 'HIDDEN-ON-SINGLEPLAYER'
 const hideForSingle = document.querySelectorAll('.hidden-on-singleplayer');
@@ -27,27 +27,23 @@ let temp = {
 }
 
 //used throughout for the food piece
-const appleCoord = {
+let appleCoord = {
   y: -1,
   x: -1
 }
 
 //random start for snake
-temp.y = Math.floor(Math.random() * (rows));
-temp.x = Math.floor(Math.random() * (cols));
+temp = randomCoord();
 snake.setCoordinatesOfSegment(temp, snake.headIndex);
 snake.coordsSet.add(coordToString(temp));
 
 //random start for food
 do {
-  appleCoord.y = Math.floor(Math.random() * (rows));
-  appleCoord.x = Math.floor(Math.random() * (cols));
-} while (snake.inSet(appleCoord))
+  appleCoord = randomCoord();
+} while (inSet(appleCoord, snake.coordsSet))
 
 //used throughout for getting divs
 let cell;
-//used for key press events
-let hasMovedThisFrame = false;
 
 //print food
 cell = document.getElementById(coordToString(appleCoord));
@@ -58,13 +54,12 @@ cell.style.borderColor = foodColor;
 const intervalId = 
 setInterval(() => {
   console.log('loop counter');
-  hasMovedThisFrame = false;
   //respawn food if neccessary
   if (appleCoord.y === -1) {
     appleCoord.y = Math.floor(Math.random() * (rows));
     appleCoord.x = Math.floor(Math.random() * (cols));
     //verify new coord
-    if (snake.inSet(appleCoord))
+    if (inSet(appleCoord, snake.coordsSet))
       appleCoord.y = -1;
     if (appleCoord.y >= 0) {
       //print food
@@ -78,7 +73,8 @@ setInterval(() => {
   snake.eraseTail();
 
   //check for food being eaten
-  if (snake.coordsArr[snake.headIndex].y === appleCoord.y && snake.coordsArr[snake.headIndex].x === appleCoord.x) {
+  temp = snake.getCurrentHead();
+  if (temp.y === appleCoord.y && temp.x === appleCoord.x) {
     appleCoord.y = -1;
     snake.score++;
     document.getElementById('score').innerText = `SCORE: ${snake.score}`;
@@ -93,7 +89,7 @@ setInterval(() => {
   //calculate next head and whether it kills the snake or not
   snake.dir = snake.nextDir;
   temp = snake.calculateNextHead();
-  if (snake.inSet(temp)) {
+  if (inSet(temp, snake.coordsSet)) {
     snake.alive = false;
   }
   else {
@@ -154,10 +150,7 @@ document.addEventListener('keydown', (event) => {
 //Handle special cases for mobile vs desktop
 if (window.innerWidth < 1000) {
   //hide for mobile
-  const toHide = document.querySelectorAll('.hidden-on-mobile');
-  toHide.forEach(element => {
-    element.style.display = 'none';
-  });
+  hideDesktopElements();
 
   //Event listeners for joystick
   const base = document.getElementById("joystick-base");
@@ -258,10 +251,7 @@ if (window.innerWidth < 1000) {
 }
 else {
   //hide for desktop
-  const toHide = document.querySelectorAll('.hidden-on-desktop');
-  toHide.forEach(element => {
-    element.style.display = 'none';
-  });
+  hideMobileElements();
 
   //Event listener for wasd and arrow keys
   document.addEventListener('keydown', (event) => {

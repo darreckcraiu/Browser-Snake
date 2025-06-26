@@ -1,54 +1,63 @@
 console.log('multiplayer js file running...');
-import { rows,cols, snakeArrSize, gameloopInterval, foodColor } from "./config.js";
+import { snakeArrSize, gameloopInterval, foodColor, numOfPlayers, playerControls } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordToString, handleDirection } from "./utils.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements } from "./utils.js";
 
-//HIDE ALL ELEMENTS OF CLASS 'HIDDEN-ON-MULTIPLAYER'
-const hideForMulti = document.querySelectorAll('.hidden-on-multiplayer');
-hideForMulti.forEach(element => {
-  element.style.display = 'none';
-});
-
-const highscore = localStorage.getItem('highscore') !== null ?
-localStorage.getItem('highscore') : 1;
-document.getElementById('highscore').innerText = `HIGHSCORE: ${highscore}`;
+//hide inappropriate elements from page
+hideMobileElements();
+hideSinglePlayerElements();
 
 const grid = new Grid(); //create grid
 
 //render starting grid
 grid.setupGrid();
 
-const snake = new Snake(); //create snake
+//create snakes/players and add them to the snakes js array
+let snakes = [];
+for (let i = 0; i < numOfPlayers; i++) {
+  snakes[i] = new Snake;
+}
+snakes[1].color = "rgb(0, 174, 255)";
 
-//used throughout for coordinate pairs
+//use a js array like a queue to keep track of snakes that are dead
+let deadSnakesQueue = [];
+//set to keep track of occupied positions on the grid
+let occupied = new Set();
+
+//used throughout for different snakes
+let snakePtr;
+//used throughout for different coordinate pairs
 let temp = {
   y: -1,
   x: -1
 }
-
 //used throughout for the food piece
-const appleCoord = {
+let appleCoord = {
   y: -1,
   x: -1
 }
 
-//random start for snake
-temp.y = Math.floor(Math.random() * (rows));
-temp.x = Math.floor(Math.random() * (cols));
-snake.setCoordinatesOfSegment(temp, snake.headIndex);
-snake.coordsSet.add(coordToString(temp));
+//random start for each snake
+snakes.forEach(snake => {
+  do {
+    temp = randomCoord();
+  } while (occupied.has(coordToString(temp)));
+  snake.setCoordinatesOfSegment(temp, snake.headIndex);
+  snake.coordsSet.add(coordToString(temp));
+  occupied.add(coordToString(temp));
+});
 
-//random start for food
+//random start for the food
 do {
-  appleCoord.y = Math.floor(Math.random() * (rows));
-  appleCoord.x = Math.floor(Math.random() * (cols));
-} while (snake.inSet(appleCoord))
+  temp = randomCoord();
+} while (occupied.has(coordToString(temp)));
+appleCoord = temp;
+occupied.add(coordToString(temp));
+
 
 //used throughout for getting divs
 let cell;
-//used for key press events
-let hasMovedThisFrame = false;
 
 //print food
 cell = document.getElementById(coordToString(appleCoord));
@@ -59,13 +68,11 @@ cell.style.borderColor = foodColor;
 const intervalId = 
 setInterval(() => {
   console.log('loop counter');
-  hasMovedThisFrame = false;
   //respawn food if neccessary
   if (appleCoord.y === -1) {
-    appleCoord.y = Math.floor(Math.random() * (rows));
-    appleCoord.x = Math.floor(Math.random() * (cols));
+    appleCoord = randomCoord();
     //verify new coord
-    if (snake.inSet(appleCoord))
+    if (occupied.has(coordToString(appleCoord)))
       appleCoord.y = -1;
     if (appleCoord.y >= 0) {
       //print food
@@ -75,37 +82,88 @@ setInterval(() => {
     }
   }
 
-  //only erases from the grid visually
-  snake.eraseTail();
+  //VISUALLY erase tails of all alive or currently dying snakes
+  snakes.forEach(snake => {
+    if (snake.alive)
+      snake.eraseTail();
+    else if (snake.tailIndex < snake.headIndex)
+      snake.eraseTail();
+  });
 
   //check for food being eaten
-  if (snake.coordsArr[snake.headIndex].y === appleCoord.y && snake.coordsArr[snake.headIndex].x === appleCoord.x) {
-    appleCoord.y = -1;
-    snake.score++;
-    document.getElementById('score').innerText = `SCORE: ${snake.score}`;
-    if (snake.score > highscore)
-      document.getElementById('highscore').innerText = `HIGHSCORE: ${snake.score}`;
-  }
-  else {
-    //this is skipped if the snake ate an apple
-    snake.advanceTailIndex();
-  }
+  snakes.forEach(snake => {
+    //if the snake's head landed on the apple
+    temp = snake.getCurrentHead();
+    if (temp.y === appleCoord.y && temp.x === appleCoord.x) {
+      appleCoord.y = -1;
+      occupied.delete(coordToString(appleCoord));
+      snake.score++;
+    }
+    else {
+      //this is skipped for the snake that ate the apple
+      //erase the tail from occupied and advance the tail index
+      occupied.delete(coordToString(snake.getCurrentTail()));
+      snake.advanceTailIndex();
+    }
+  });
 
-  //calculate next head and whether it kills the snake or not
-  snake.dir = snake.nextDir;
-  temp = snake.calculateNextHead();
-  if (snake.inSet(temp)) {
-    snake.alive = false;
-  }
-  else {
-    snake.coordsSet.add(coordToString(temp));
-    snake.headIndex = (snake.headIndex + 1) % snakeArrSize; //advance head index
-    snake.setCoordinatesOfSegment(temp, snake.headIndex); //update change in snake array
-  }
+  //calculate new heads and check if any snake just killed itself as a result
+  snakes.forEach(snake => {
+    if (snake.alive) {
+      snake.dir = snake.nextDir; //update the snake's direction
+      temp = snake.calculateNextHead();
+      if (inSet(temp, snake.coordsSet)) {
+        //if it hit itself
+        snake.alive = false;
+        deadSnakesQueue.push(snake);
+      }
+      else {
+        //didn't hit itself
+        occupied.add(coordToString(temp));
+        snake.coordsSet.add(coordToString(temp)); //add new head to the snake's coords set
+        snake.headIndex = (snake.headIndex + 1) % snakeArrSize; //advance head index
+        snake.setCoordinatesOfSegment(temp, snake.headIndex); //update change in snake array
+      }
+    }
+  });
+  
+  //check if any snakes killed each other and mark the dead ones
+  //this loop will loop through the whole loop for each snake
+  for (let i = 0; i < numOfPlayers; i++) {
+    snakePtr = snakes[i];
+    if (!snakePtr.alive)
+      continue; //if snake is dead, continue the loop for the next snake
 
-  //print new head if snake is alive
-  if (snake.alive)
-    snake.printHead();
+    for (let j = 0; j < numOfPlayers; j++) {
+      if (i == j)
+        continue; //continue this inner for loop to not compare the snake to itself
+      //if the head of snakePtr makes contact with any part of snakes[j]
+      if (snakes[j].alive && inSet(snakes[j].getCurrentHead(), snakePtr.coordsSet)) {
+        snakes[j].alive = false;
+        deadSnakesQueue.push(snakes[j]);
+        //if their heads are what hit specifically. This extra check is to avoid a bug that lets one snake live anyway
+        if (coordsEqual(snakePtr.getCurrentHead(), snakes[j].getCurrentHead())
+          || snakePtr.getCurrentHead(), snakes[j].coordsArr[snakes[j].headIndex - 1]) {
+            snakePtr.alive = false;
+            deadSnakesQueue.push(snakePtr);
+        }
+      }
+    }
+  }
+  
+  //print new heads for alive snakes
+  snakes.forEach(snake => {
+    if (snake.alive)
+      snake.printHead();
+  });
+  
+  //check for win
+  if (numOfPlayers - deadSnakesQueue.length <= 1) {
+    //end the game
+    clearInterval(intervalId); //stop the main game loop
+  }
+  
+  /*
   else {
     //stop main loop, show game over screen, and erase snake body piece by piece like an animation that accelerates as well
     clearInterval(intervalId); //stop the main game loop
@@ -132,7 +190,7 @@ setInterval(() => {
     console.log('DIED');
     if (snake.score > highscore)
       localStorage.setItem('highscore', `${snake.score}`);
-  }
+  }*/
   
 }, gameloopInterval);
 
@@ -147,136 +205,24 @@ document.addEventListener('keydown', (event) => {
     const endscreen = document.querySelector('.endscreen');
     endscreen.style.display = 'flex';
     console.log('USER EXIT');
-    if (snake.score > highscore)
-      localStorage.setItem('highscore', `${snake.score}`);
   }
 });
 
-//Handle special cases for mobile vs desktop
-if (window.innerWidth < 1000) {
-  //hide for mobile
-  const toHide = document.querySelectorAll('.hidden-on-mobile');
-  toHide.forEach(element => {
-    element.style.display = 'none';
-  });
+// Event listener for player key presses
+document.addEventListener('keydown', (event) => {
+  const key = event.key.toLowerCase();
 
-  //Event listeners for joystick
-  const base = document.getElementById("joystick-base");
-  const knob = document.getElementById("joystick-knob");
+  playerControls.forEach((controls, index) => {
+    const currentDir = snakes[index]?.dir; // Optional chaining in case snake doesn't exist
 
-  function getCenterCoords() {
-    const rect = base.getBoundingClientRect();
-    return {
-      x: rect.width / 2,
-      y: rect.height / 2
-    };
-  }
-
-  let lastDirectionTime = 0;
-  const directionCooldown = 20; // milliseconds
-  
-  knob.addEventListener("touchstart", e => e.preventDefault(), { passive: false });
-
-  knob.addEventListener("touchmove", (e) => {
-    e.preventDefault();
-
-    const touch = e.touches[0];
-    const baseRect = base.getBoundingClientRect();
-    const touchX = touch.clientX - baseRect.left;
-    const touchY = touch.clientY - baseRect.top;
-
-    const center = getCenterCoords();
-    const dx = touchX - center.x;
-    const dy = touchY - center.y;
-
-    const angle = Math.atan2(dy, dx);
-    const distance = Math.min(Math.hypot(dx, dy), baseRect.width / 3);
-
-    const offsetX = Math.cos(angle) * distance;
-    const offsetY = Math.sin(angle) * distance;
-
-    knob.style.left = `${center.x + offsetX}px`;
-    knob.style.top = `${center.y + offsetY}px`;
-
-    // Direction handling
-    const now = Date.now();
-
-    if (Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 20 && now - lastDirectionTime > directionCooldown) {
-        handleDirection("rightDir", snake.dir, snake);
-        lastDirectionTime = now;
-      } else if (dx < -20 && now - lastDirectionTime > directionCooldown) {
-        handleDirection("leftDir", snake.dir, snake);
-        lastDirectionTime = now;
-      }
-    } else {
-      if (dy > 20 && now - lastDirectionTime > directionCooldown) {
-        handleDirection("downDir", snake.dir, snake);
-        lastDirectionTime = now;
-      } else if (dy < -20 && now - lastDirectionTime > directionCooldown) {
-        handleDirection("upDir", snake.dir, snake);
-        lastDirectionTime = now;
-      }
+    if (key === controls.up.toLowerCase()) {
+      handleDirection('upDir', currentDir, snakes[index]);
+    } else if (key === controls.down.toLowerCase()) {
+      handleDirection('downDir', currentDir, snakes[index]);
+    } else if (key === controls.left.toLowerCase()) {
+      handleDirection('leftDir', currentDir, snakes[index]);
+    } else if (key === controls.right.toLowerCase()) {
+      handleDirection('rightDir', currentDir, snakes[index]);
     }
   });
-
-  knob.addEventListener("touchend", () => {
-    // Return to center using CSS centering method
-    knob.style.left = "50%";
-    knob.style.top = "50%";
-  });
-
-  //Event listeners for swipe controls
-  let touchStartX = 0;
-  let touchStartY = 0; 
-
-  document.addEventListener('touchstart', function (e) {
-    const touch = e.changedTouches[0];
-    touchStartX = touch.clientX;
-    touchStartY = touch.clientY;
-  }, false);
-
-  document.addEventListener('touchend', function (e) {
-    const touch = e.changedTouches[0];
-    const deltaX = touch.clientX - touchStartX;
-    const deltaY = touch.clientY - touchStartY;
-
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-      if (deltaX > 30) {
-        handleDirection('rightDir', snake.dir, snake);
-      } else if (deltaX < -30) {
-        handleDirection('leftDir', snake.dir, snake);
-      }
-    } else {
-      if (deltaY > 30) {
-        handleDirection('downDir', snake.dir, snake);
-      } else if (deltaY < -30) {
-        handleDirection('upDir', snake.dir, snake);
-      }
-    }
-  }, false);
-  
-}
-else {
-  //hide for desktop
-  const toHide = document.querySelectorAll('.hidden-on-desktop');
-  toHide.forEach(element => {
-    element.style.display = 'none';
-  });
-
-  //Event listener for wasd and arrow keys
-  document.addEventListener('keydown', (event) => {
-    const key = event.key.toLowerCase();
-    const currentDir = snake.dir;
-
-    if ((key === 'w' || event.key === 'ArrowUp')) {
-      handleDirection('upDir', currentDir, snake);
-    } else if (key === 's' || event.key === 'ArrowDown') {
-      handleDirection('downDir', currentDir, snake);
-    } else if (key === 'a' || event.key === 'ArrowLeft') {
-      handleDirection('leftDir', currentDir, snake);
-    } else if (key === 'd' || event.key === 'ArrowRight') {
-      handleDirection('rightDir', currentDir, snake);
-    }
-  });
-}
+});

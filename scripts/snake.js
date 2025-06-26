@@ -6,6 +6,8 @@ export default class Snake {
   //initialized to hold pairs of 0
   coordsArr = Array.from({ length: snakeArrSize }, () => ({ y: 0, x: 0 }));
 
+  snakeID = -1; //to reference each snake uniquely
+  color = snakeColor;
   dir = {y: 0, x: 0};
   nextDir = {y: 0, x: 0};
   headIndex = 0;
@@ -30,11 +32,15 @@ export default class Snake {
     return this.coordsArr[this.headIndex];
   }
 
+  getCurrentTail() {
+    return this.coordsArr[this.tailIndex];
+  }
+
   printHead() {
     const head = this.coordsArr[this.headIndex];
     const cell = document.getElementById(coordToString(head));
-    cell.style.backgroundColor = snakeColor;
-    cell.style.borderColor = snakeColor;
+    cell.style.backgroundColor = this.color;
+    cell.style.borderColor = this.color;
   }
 
   eraseTail() {
@@ -50,10 +56,5 @@ export default class Snake {
 		this.coordsSet.delete(coordToString(coord));
 		this.tailIndex = (this.tailIndex + 1) % snakeArrSize;
 	}
-
-  inSet(coord) {
-    coord = coordToString(coord);
-    return this.coordsSet.has(coord);
-  }
 
 }
