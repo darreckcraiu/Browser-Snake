@@ -1,4 +1,4 @@
-import { rows, cols, cellStyles, gameContainerStyles } from "./config.js";
+import { rows, cols, cellStyles, gameContainerStyles, playermode } from "./config.js";
 
 //first set the width and height of the center panel to the same that the game grid will have
 const centerPanel = document.querySelector('.center-panel');
@@ -36,7 +36,7 @@ function setupButtons() {
   const settingsButton = document.getElementById('settings-button');
   settingsButton.addEventListener('click', () => {
     const settingsScreen = document.querySelector('.settings-screen');
-    const multiplayerButton = document.getElementById('multiplayer-button');
+    const playermodeButton = document.getElementById('playermode-button');
 
     // Toggle visibility of settings screen
     settingsScreen.classList.toggle('hidden');
@@ -45,7 +45,7 @@ function setupButtons() {
     settingsButton.textContent = settingsButton.textContent === 'Settings' ? 'BACK' : 'Settings';
 
     // Toggle visibility of multiplayer button
-    multiplayerButton.classList.toggle('hidden');
+    playermodeButton.classList.toggle('hidden');
   });
 
   // for RESET HIGHSCORE button
@@ -76,6 +76,20 @@ function setupButtons() {
   const resetToDefaultButton = document.querySelector('.reset-to-default-button');
   resetToDefaultButton.addEventListener('click', () => {
     localStorage.removeItem('settings');
+    location.reload();
+  });
+
+  // for playermode button
+  const playermodeButton = document.getElementById('playermode-button');
+  if (playermode === 'SINGLEPLAYER')
+    playermodeButton.textContent = 'PLAY MULTIPLAYER';
+  else
+    playermodeButton.textContent = 'PLAY SINGLEPLAYER';
+  playermodeButton.addEventListener('click', () => {
+    if (playermodeButton.textContent === 'PLAY SINGLEPLAYER')
+      localStorage.setItem('playermode', 'SINGLEPLAYER');
+    else
+      localStorage.setItem('playermode', 'MULTIPLAYER');
     location.reload();
   });
 }

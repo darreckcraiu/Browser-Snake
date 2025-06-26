@@ -1,5 +1,6 @@
-//get settings from local storage and if it's null, get an empty object
+//get settings and certain other variables from localstorage
 const settings = JSON.parse(localStorage.getItem("settings") || '{}');
+export const playermode = localStorage.getItem('playermode') || 'SINGLEPLAYER'; //singleplayer is the default
 
 //default settings values
 const defaultRows = 12;

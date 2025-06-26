@@ -76,11 +76,11 @@
   border-bottom-right-radius: 10px;
 }
 
-#multiplayer-button {
+#playermode-button {
   background-color: blueviolet;
   margin-right: 100px;
 }
-#multiplayer-button:hover {
+#playermode-button:hover {
   background-color: rgb(158, 57, 252);
 }
 
