@@ -1,8 +1,8 @@
 console.log('multiplayer js file running...');
-import { snakeArrSize, gameloopInterval, foodColor, numOfPlayers, playerControls } from "./config.js";
+import { snakeArrSize, gameloopInterval, foodColor, numOfPlayers, playerControls, playerColors } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements } from "./utils.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple } from "./utils.js";
 
 //hide inappropriate elements from page
 hideMobileElements();
@@ -18,7 +18,11 @@ let snakes = [];
 for (let i = 0; i < numOfPlayers; i++) {
   snakes[i] = new Snake;
 }
-snakes[1].color = "rgb(0, 174, 255)";
+//give unique IDs to each snake
+snakes.forEach((snake, i) => {
+  snake.ID = i; 
+  snake.color = playerColors[i];
+});
 
 //use a js array like a queue to keep track of snakes that are dead
 let deadSnakesQueue = [];
@@ -55,14 +59,8 @@ do {
 appleCoord = temp;
 occupied.add(coordToString(temp));
 
-
-//used throughout for getting divs
-let cell;
-
 //print food
-cell = document.getElementById(coordToString(appleCoord));
-cell.style.backgroundColor = foodColor;
-cell.style.borderColor = foodColor;
+drawApple(appleCoord);
 
 //game loop
 const intervalId = 
@@ -76,9 +74,7 @@ setInterval(() => {
       appleCoord.y = -1;
     if (appleCoord.y >= 0) {
       //print food
-      cell = document.getElementById(coordToString(appleCoord));
-      cell.style.backgroundColor = foodColor;
-      cell.style.borderColor = foodColor;
+      drawApple(appleCoord);
     }
   }
 
@@ -143,9 +139,9 @@ setInterval(() => {
         deadSnakesQueue.push(snakes[j]);
         //if their heads are what hit specifically. This extra check is to avoid a bug that lets one snake live anyway
         if (coordsEqual(snakePtr.getCurrentHead(), snakes[j].getCurrentHead())
-          || snakePtr.getCurrentHead(), snakes[j].coordsArr[snakes[j].headIndex - 1]) {
-            snakePtr.alive = false;
-            deadSnakesQueue.push(snakePtr);
+          || coordsEqual(snakePtr.getCurrentHead(), snakes[j].coordsArr[snakes[j].headIndex - 1])) {
+          snakePtr.alive = false;
+          deadSnakesQueue.push(snakePtr);
         }
       }
     }
@@ -157,14 +153,8 @@ setInterval(() => {
       snake.printHead();
   });
   
-  //check for win
+  //check for win (1 player left)
   if (numOfPlayers - deadSnakesQueue.length <= 1) {
-    //end the game
-    clearInterval(intervalId); //stop the main game loop
-  }
-  
-  /*
-  else {
     //stop main loop, show game over screen, and erase snake body piece by piece like an animation that accelerates as well
     clearInterval(intervalId); //stop the main game loop
 
@@ -172,25 +162,25 @@ setInterval(() => {
     //recursive function
     function eraseTailWithAcceleration() {
       // this if statement only runs if the tail hasn't caught up to the head yet
-      if (snake.tailIndex !== (snake.headIndex + 1) % snakeArrSize) {
-        snake.eraseTail();
-        snake.advanceTailIndex();
+      snakes.forEach(snake => {
+        if (!snake.alive && snake.tailIndex !== (snake.headIndex + 1) % snakeArrSize) {
+          snake.eraseTail();
+          snake.advanceTailIndex();
 
-        // Accelerate
-        timeoutInterval = Math.max(timeoutInterval * 0.9, 30);
+          // Accelerate
+          timeoutInterval = Math.max(timeoutInterval * 0.9, 30);
 
-        setTimeout(eraseTailWithAcceleration, timeoutInterval);
-      }
+          setTimeout(eraseTailWithAcceleration, timeoutInterval);
+        }
+      });
     }
     eraseTailWithAcceleration(); // Start it
     
     //display endscreen
     const endscreen = document.querySelector('.endscreen');
     endscreen.style.display = 'flex';
-    console.log('DIED');
-    if (snake.score > highscore)
-      localStorage.setItem('highscore', `${snake.score}`);
-  }*/
+    console.log(deadSnakesQueue.length);
+  }
   
 }, gameloopInterval);
 
@@ -214,6 +204,7 @@ document.addEventListener('keydown', (event) => {
 
   playerControls.forEach((controls, index) => {
     const currentDir = snakes[index]?.dir; // Optional chaining in case snake doesn't exist
+    if (!currentDir)  return; //like 'continue'
 
     if (key === controls.up.toLowerCase()) {
       handleDirection('upDir', currentDir, snakes[index]);

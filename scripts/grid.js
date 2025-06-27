@@ -1,9 +1,4 @@
-import { rows, cols, cellStyles, gameContainerStyles, playermode } from "./config.js";
-
-//first set the width and height of the center panel to the same that the game grid will have
-const centerPanel = document.querySelector('.center-panel');
-centerPanel.style.height = gameContainerStyles.height;
-centerPanel.style.width = gameContainerStyles.width;
+import { rows, cols, cellStyles, gameContainerStyles, playermode, foodColor } from "./config.js";
 
 /* ---------------------- UI SCALING FUNCTIONS ---------------------- */
 
@@ -180,7 +175,9 @@ export default class Grid {
     let gridHTML = '';
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        gridHTML += `<div id="${this.array[i][j]}" class="js-grid-cell"></div>`;
+        gridHTML += `<div id="${this.array[i][j]}" class="js-grid-cell" style='display: flex'>
+          <div style='width: 100%; height: 100%'></div>
+        </div>`;
       }
     }
     container.innerHTML = gridHTML;

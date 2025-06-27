@@ -1,4 +1,4 @@
-import { rows, cols } from "./config.js";
+import { rows, cols, foodColor, cellStyles } from "./config.js";
 export function coordToString(coord) {
   return `${coord.y}_${coord.x}`;
 }
@@ -23,6 +23,13 @@ export function handleDirection(arrowDir, currentDir, snake) {
     } else if (arrowDir === 'rightDir' && currentDir.x !== -1) {
       snake.nextDir = { x: 1, y: 0 };
     }
+}
+export function drawApple(coord) {
+  const cell = document.getElementById(coordToString(coord));
+  const innerDiv = cell.querySelector('div');
+  innerDiv.style.backgroundColor = foodColor;
+  innerDiv.style.borderColor = foodColor;
+  innerDiv.style.borderRadius = '30%';
 }
 export function inSet(coord, set) {
   coord = coordToString(coord);

@@ -1,7 +1,7 @@
 import { rows,cols, snakeArrSize, gameloopInterval, foodColor } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideDesktopElements } from "./utils.js";
+import { coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideDesktopElements, drawApple } from "./utils.js";
 
 //HIDE ALL ELEMENTS OF CLASS 'HIDDEN-ON-SINGLEPLAYER'
 const hideForSingle = document.querySelectorAll('.hidden-on-singleplayer');
@@ -46,9 +46,7 @@ do {
 let cell;
 
 //print food
-cell = document.getElementById(coordToString(appleCoord));
-cell.style.backgroundColor = foodColor;
-cell.style.borderColor = foodColor;
+drawApple(appleCoord);
 
 //game loop
 const intervalId = 
@@ -63,9 +61,7 @@ setInterval(() => {
       appleCoord.y = -1;
     if (appleCoord.y >= 0) {
       //print food
-      cell = document.getElementById(coordToString(appleCoord));
-      cell.style.backgroundColor = foodColor;
-      cell.style.borderColor = foodColor;
+      drawApple(appleCoord);
     }
   }
 
