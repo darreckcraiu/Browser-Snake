@@ -1,5 +1,5 @@
 console.log('multiplayer js file running...');
-import { snakeArrSize, gameloopInterval, foodColor, numOfPlayers, playerControls, playerColors } from "./config.js";
+import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, cellStyles, gameContainerStyles, rows, cols } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
 import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple } from "./utils.js";
@@ -176,10 +176,33 @@ setInterval(() => {
     }
     eraseTailWithAcceleration(); // Start it
     
+    //get the winning snake
+    let winnerSnake = -1;
+    for (let i = 0; i < numOfPlayers; i++) {
+      if (snakes[i].alive) {
+        winnerSnake = snakes[i];
+        break;
+      }
+    }
+
+    //add in colored grid square of winner in endscreen
+    if (winnerSnake !== -1) {
+      const winnerDiv = document.getElementById('multiplayer-winner-div');
+      winnerDiv.style.display = 'block';
+      winnerDiv.style.width = `${gameContainerStyles.width / cols}px`;
+      winnerDiv.style.height = `${gameContainerStyles.height / rows}px`;
+      winnerDiv.style.backgroundColor = winnerSnake.color;
+      winnerDiv.style.borderColor = winnerSnake.color;
+    }
+    else {
+      //tie game
+      const endText = document.getElementById('multiplayer-winner-text');
+      endText.textContent = 'TIE GAME';
+    }    
+
     //display endscreen
     const endscreen = document.querySelector('.endscreen');
     endscreen.style.display = 'flex';
-    console.log(deadSnakesQueue.length);
   }
   
 }, gameloopInterval);
@@ -191,6 +214,9 @@ setInterval(() => {
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape') {
     clearInterval(intervalId);
+    //tie game
+    const endText = document.getElementById('multiplayer-winner-text');
+    endText.textContent = 'TIE GAME';
     //display endscreen    
     const endscreen = document.querySelector('.endscreen');
     endscreen.style.display = 'flex';

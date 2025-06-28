@@ -32,6 +32,9 @@ localStorage.setItem('settings', JSON.stringify({
   height: gameContainerStyles.height
 }));
 
+
+
+//FOR MULTIPLAYER
 export const playerControls = [
   { up: 'w', down: 's', left: 'a', right: 'd' }, // Player 0 (WASD)
   { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }, // Player 1 (arrowkeys)
@@ -39,7 +42,6 @@ export const playerControls = [
   { up: 't', down: 'g', left: 'f', right: 'h' } // Player 3 (TFGH)
 ]; 
 
-//FOR MULTIPLAYER
 export const numOfPlayers = 4;
 export const playerColors = [
   'rgb(145, 255, 123)',

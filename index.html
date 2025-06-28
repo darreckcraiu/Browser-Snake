@@ -36,7 +36,11 @@
 
         <div class="endscreen">
           <div class="endscreen-content">
-            <p>GAME OVER</p>
+            <p class="hidden-on-multiplayer">GAME OVER</p>
+            <div class="hidden-on-singleplayer" style="display: flex; align-items: center;">
+              <div id="multiplayer-winner-div" style="display: none;"></div>
+              <p id="multiplayer-winner-text">WON</p>
+            </div>
             <button id="retry-button" class="button" >Play Again</button>
           </div>
         </div>
