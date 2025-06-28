@@ -15,9 +15,8 @@ grid.setupGrid();
 
 //create snakes/players and add them to the snakes js array
 let snakes = [];
-for (let i = 0; i < numOfPlayers; i++) {
+for (let i = 0; i < numOfPlayers; i++)
   snakes[i] = new Snake;
-}
 //give unique IDs to each snake
 snakes.forEach((snake, i) => {
   snake.ID = i; 

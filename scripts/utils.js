@@ -29,7 +29,7 @@ export function drawApple(coord) {
   const innerDiv = cell.querySelector('div');
   innerDiv.style.backgroundColor = foodColor;
   innerDiv.style.borderColor = foodColor;
-  innerDiv.style.borderRadius = '30%';
+  innerDiv.style.borderRadius = '50%';
 }
 export function inSet(coord, set) {
   coord = coordToString(coord);
