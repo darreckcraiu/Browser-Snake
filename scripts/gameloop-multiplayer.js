@@ -21,7 +21,7 @@ for (let i = 0; i < numOfPlayers; i++) {
 //give unique IDs to each snake
 snakes.forEach((snake, i) => {
   snake.ID = i; 
-  snake.color = playerColors[i];
+  snake.color = playerColors[i] || 'white';
 });
 
 //use a js array like a queue to keep track of snakes that are dead

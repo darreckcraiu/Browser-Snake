@@ -42,7 +42,7 @@ export const playerControls = [
   { up: 't', down: 'g', left: 'f', right: 'h' } // Player 3 (TFGH)
 ]; 
 
-export const numOfPlayers = 4;
+export const numOfPlayers = 2;
 export const playerColors = [
   'rgb(145, 255, 123)',
   'rgb(57, 166, 255)',
