@@ -1,4 +1,4 @@
-import { rows, cols, foodColor, cellStyles } from "./config.js";
+import { rows, cols, foodColor, cellStyles, numOfPlayers, playerControls } from "./config.js";
 export function coordToString(coord) {
   return `${coord.y}_${coord.x}`;
 }
@@ -61,4 +61,37 @@ export function hideMultiplayerElements() {
     toHide.forEach(element => {
     element.style.display = 'none';
   });
+}
+export function generateControlsUI() {
+  let controlsUIHTML = ``;
+  //create the div html for each player
+  for (let i = 0; i < numOfPlayers; i++) {
+    let up, down, left, right;
+    if (playerControls[i].up.toUpperCase() === 'ARROWUP') {
+      up = '&#8593;';
+      down = '&#8595;';
+      left = '&#8592;';
+      right = '&#8594;';
+    }
+    else {
+      up = playerControls[i].up.toUpperCase();
+      down = playerControls[i].down.toUpperCase();
+      left = playerControls[i].left.toUpperCase();
+      right = playerControls[i].right.toUpperCase();
+    }
+    controlsUIHTML+=
+      `
+      <div id="player-controls-container">
+        <div id="player${i + 1}-rep-div"></div>
+        <div>-</div>
+        <div class="controlkeys-grid">
+          <div style="grid-row: 1; grid-column: 2;">${up}</div>
+          <div style="grid-row: 2; grid-column: 1;">${left}</div>
+          <div style="grid-row: 2; grid-column: 2;">${down}</div>
+          <div style="grid-row: 2; grid-column: 3;">${right}</div>
+        </div>
+      </div>
+      `;
+  }
+  document.querySelector('.right-panel').innerHTML = controlsUIHTML;
 }

@@ -42,9 +42,6 @@ do {
   appleCoord = randomCoord();
 } while (inSet(appleCoord, snake.coordsSet))
 
-//used throughout for getting divs
-let cell;
-
 //print food
 drawApple(appleCoord);
 

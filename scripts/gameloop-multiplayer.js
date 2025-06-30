@@ -2,7 +2,9 @@ console.log('multiplayer js file running...');
 import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, cellStyles, gameContainerStyles, rows, cols } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple } from "./utils.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, generateControlsUI } from "./utils.js";
+
+generateControlsUI();
 
 //hide inappropriate elements from page
 hideMobileElements();

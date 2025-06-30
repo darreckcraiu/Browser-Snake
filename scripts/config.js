@@ -35,14 +35,13 @@ localStorage.setItem('settings', JSON.stringify({
 
 
 //FOR MULTIPLAYER
+export const numOfPlayers = 4;
 export const playerControls = [
   { up: 'w', down: 's', left: 'a', right: 'd' }, // Player 0 (WASD)
   { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }, // Player 1 (arrowkeys)
   { up: 'i', down: 'k', left: 'j', right: 'l' }, // Player 2 (IJKL)
   { up: 't', down: 'g', left: 'f', right: 'h' } // Player 3 (TFGH)
-]; 
-
-export const numOfPlayers = 4;
+];
 export const playerColors = [
   'rgb(145, 255, 123)',
   'rgb(0, 174, 255)',

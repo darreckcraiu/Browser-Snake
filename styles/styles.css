@@ -17,13 +17,8 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#score {
-  margin-left: 5%;
-}
-
 #highscore {
   color: rgb(255, 238, 0);
-  margin-right: 5%;
 }
 
 .endscreen {
@@ -154,4 +149,33 @@ body {
 
 #multiplayer-winner-div {
   margin-right: 30px;
+}
+
+#player-controls-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+#player1-rep-div,
+#player2-rep-div,
+#player3-rep-div,
+#player4-rep-div {
+  background-color: rgba(255, 255, 255, 0.411);
+  width: 50px;
+  height: 50px;
+}
+
+.controlkeys-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-template-rows: repeat(2, 60px);
+}
+.controlkeys-grid div {
+  background-color: rgb(170, 170, 170);
+  text-align: center;
+  border: 1px solid white;
+  margin: 1px;
 }
