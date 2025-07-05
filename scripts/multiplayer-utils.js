@@ -5,7 +5,7 @@ import { snakes } from "./gameloop-multiplayer.js";
 export function generateControlsUI() {
   let controlsUIHTML = ``;
   //create the div html for each player
-  for (let i = 0; i < numOfPlayers; i++) {
+  for (let i = 0; i < playerControls.length; i++) {
     let up, down, left, right;
     if (playerControls[i].up.toUpperCase() === 'ARROWUP') {
       up = '&#8593;';
@@ -37,7 +37,9 @@ export function generateControlsUI() {
 
   //assign style to the player rep divs
   snakes.forEach((snake, i) => {
-    const playerRepDiv = document.getElementById(`player${i + 1}-rep-div`);
-    assignCellStyles(playerRepDiv, snake.cellStyle);
+    if (i < playerControls.length) {
+      const playerRepDiv = document.getElementById(`player${i + 1}-rep-div`);
+      assignCellStyles(playerRepDiv, snake.cellStyle);
+    }
   });
 }
