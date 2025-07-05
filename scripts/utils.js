@@ -1,4 +1,6 @@
 import { rows, cols, foodColor, cellStyles, numOfPlayers, playerControls } from "./config.js";
+import { snakes } from "./gameloop-multiplayer.js";
+
 export function coordToString(coord) {
   return `${coord.y}_${coord.x}`;
 }
@@ -94,4 +96,16 @@ export function generateControlsUI() {
       `;
   }
   document.querySelector('.right-panel').innerHTML = controlsUIHTML;
+
+  //assign style to the player rep divs
+  snakes.forEach((snake, i) => {
+    const playerRepDiv = document.getElementById(`player${i + 1}-rep-div`);
+    assignCellStyles(playerRepDiv, snake.cellStyle);
+  });
+}
+//changes background color and border color and radius
+export function assignCellStyles(cell, styles) {
+  cell.style.backgroundColor = styles.backgroundColor;
+  cell.style.borderColor = styles.borderColor;
+  cell.style.borderRadius = styles.borderRadius;
 }

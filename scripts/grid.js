@@ -186,7 +186,7 @@ export default class Grid {
     const cells = document.querySelectorAll('.js-grid-cell');
     cells.forEach(cell => {
       Object.assign(cell.style, {
-        backgroundColor: cellStyles.color,
+        backgroundColor: cellStyles.backgroundColor,
         border: cellStyles.border
       });
     });

@@ -18,8 +18,10 @@ export const gameContainerStyles = {
   height: settings && Number(settings.height) || defaultHeight
 };
 export const cellStyles = {
-  color: 'rgb(24, 24, 24)',
-  border: '1px solid rgba(118, 250, 255, 0.44)'
+  border: '1px solid rgba(118, 250, 255, 0.44)', //for use in grid.js
+  backgroundColor: 'rgb(24, 24, 24)',
+  borderColor: 'rgba(118, 250, 255, 0.44)',
+  borderRadius: '0'
 }
 export const gridBorderColor = 'rgb(255, 255, 255)';
 export const gameloopInterval = window.innerWidth > 1000 ? 100 : 150;

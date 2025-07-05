@@ -1,5 +1,5 @@
 import { snakeColor, snakeArrSize, rows, cols, cellStyles } from "./config.js";
-import { coordToString } from "./utils.js";
+import { assignCellStyles, coordToString } from "./utils.js";
 
 export default class Snake {
   //holds the coords of the head and tail. (circular array)
@@ -7,7 +7,6 @@ export default class Snake {
   coordsArr = Array.from({ length: snakeArrSize }, () => ({ y: 0, x: 0 }));
 
   ID = -1; //to reference each snake uniquely
-  color = snakeColor;
   dir = {y: 0, x: 0};
   nextDir = {y: 0, x: 0};
   headIndex = 0;
@@ -15,6 +14,12 @@ export default class Snake {
   score = 1;
   alive = true;
   coordsSet = new Set(); //keep track of snake segment locations
+  //the css styling of the snake segments (divs of the grid)
+  cellStyle = {
+    backgroundColor: snakeColor,
+    borderColor: snakeColor,
+    borderRadius: '0'
+  };
 
   setCoordinatesOfSegment(coord, index) {
     this.coordsArr[index] = coord;
@@ -38,25 +43,20 @@ export default class Snake {
 
   printHead() {
     const head = this.coordsArr[this.headIndex];
-    const cell = document.getElementById(coordToString(head));
-    cell.style.backgroundColor = this.color;
-    cell.style.borderColor = this.color;
+    const cell = document.getElementById(coordToString(head)); //behind the snake segment (border shows)
+    const innerDiv = cell.querySelector('div'); //snake segment
+    cell.style.borderColor = this.cellStyle.borderColor; //match border to snake's color
 
-    const innerDiv = cell.querySelector('div');
-    innerDiv.style.backgroundColor = this.color;
-    innerDiv.style.borderColor = this.color;
-    innerDiv.style.borderRadius = '0';
+    assignCellStyles(innerDiv, this.cellStyle);
   }
 
   eraseTail() {
     //get the cell where tail is at and reset it visually
     const tail = this.coordsArr[this.tailIndex];
-    const cell = document.getElementById(coordToString(tail));
-    cell.style.backgroundColor = cellStyles.color;
-    cell.style.border = cellStyles.border;
-
-    const innerDiv = cell.querySelector('div');
-    innerDiv.style.backgroundColor = cellStyles.color;
+    const cell = document.getElementById(coordToString(tail)); //behind the snake segment (border shows)
+    const innerDiv = cell.querySelector('div'); //snake segment
+    cell.style.borderColor = cellStyles.borderColor; //reset borderColor to default
+    assignCellStyles(innerDiv, cellStyles); //reset innerDiv to defaults
 	}
 
   advanceTailIndex() {

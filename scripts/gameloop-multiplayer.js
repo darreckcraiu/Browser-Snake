@@ -1,10 +1,8 @@
 console.log('multiplayer js file running...');
-import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, cellStyles, gameContainerStyles, rows, cols } from "./config.js";
+import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, gameContainerStyles, rows, cols } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, generateControlsUI } from "./utils.js";
-
-generateControlsUI();
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, generateControlsUI, assignCellStyles } from "./utils.js";
 
 //hide inappropriate elements from page
 hideMobileElements();
@@ -16,14 +14,17 @@ const grid = new Grid(); //create grid
 grid.setupGrid();
 
 //create snakes/players and add them to the snakes js array
-let snakes = [];
+export let snakes = [];
 for (let i = 0; i < numOfPlayers; i++)
   snakes[i] = new Snake;
-//give unique IDs to each snake
+//give unique IDs and colors to each snake
 snakes.forEach((snake, i) => {
   snake.ID = i; 
-  snake.color = playerColors[i] || 'white';
+  snake.cellStyle.backgroundColor = playerColors[i] || 'white';
+  snake.cellStyle.borderColor = playerColors[i] || 'white';
 });
+
+generateControlsUI();
 
 //use a js array like a queue to keep track of snakes that are dead
 let deadSnakesQueue = [];
@@ -192,8 +193,7 @@ setInterval(() => {
       winnerDiv.style.display = 'block';
       winnerDiv.style.width = `${gameContainerStyles.width / cols}px`;
       winnerDiv.style.height = `${gameContainerStyles.height / rows}px`;
-      winnerDiv.style.backgroundColor = winnerSnake.color;
-      winnerDiv.style.borderColor = winnerSnake.color;
+      assignCellStyles(winnerDiv, winnerSnake.cellStyle);
     }
     else {
       //tie game
