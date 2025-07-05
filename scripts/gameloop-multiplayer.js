@@ -2,7 +2,8 @@ console.log('multiplayer js file running...');
 import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, gameContainerStyles, rows, cols } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, generateControlsUI, assignCellStyles } from "./utils.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, assignCellStyles } from "./utils.js";
+import { generateControlsUI } from "./multiplayer-utils.js";
 
 //hide inappropriate elements from page
 hideMobileElements();
@@ -84,7 +85,7 @@ setInterval(() => {
   snakes.forEach(snake => {
     if (snake.alive)
       snake.eraseTail();
-    else if (snake.tailIndex < snake.headIndex)
+    else if (snake.tailIndex !== (snake.headIndex + 1) % snakeArrSize)
       snake.eraseTail();
   });
 

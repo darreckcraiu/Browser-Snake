@@ -39,7 +39,7 @@ function setupButtons() {
     // Toggle button text
     settingsButton.textContent = settingsButton.textContent === 'Settings' ? 'BACK' : 'Settings';
 
-    // Toggle visibility of multiplayer button
+    // Toggle visibility of playermode button
     playermodeButton.classList.toggle('hidden');
   });
 

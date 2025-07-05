@@ -3,6 +3,8 @@ import Grid from "./grid.js";
 import Snake from "./snake.js";
 import { coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideDesktopElements, drawApple } from "./utils.js";
 
+console.log('singplayer file running')
+
 //HIDE ALL ELEMENTS OF CLASS 'HIDDEN-ON-SINGLEPLAYER'
 const hideForSingle = document.querySelectorAll('.hidden-on-singleplayer');
 hideForSingle.forEach(element => {

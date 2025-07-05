@@ -64,5 +64,4 @@ export default class Snake {
 		this.coordsSet.delete(coordToString(coord));
 		this.tailIndex = (this.tailIndex + 1) % snakeArrSize;
 	}
-
 }
