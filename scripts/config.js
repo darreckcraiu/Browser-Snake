@@ -1,6 +1,7 @@
 //get settings and certain other variables from localstorage
 const settings = JSON.parse(localStorage.getItem("settings") || '{}');
 export const playermode = localStorage.getItem('playermode') || 'SINGLEPLAYER'; //singleplayer is the default
+export const gamemode = localStorage.getItem('gamemode');
 
 //default grid settings values
 const defaultRows = 12;

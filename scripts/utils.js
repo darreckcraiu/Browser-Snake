@@ -1,4 +1,4 @@
-import { rows, cols, foodColor } from "./config.js";
+import { rows, cols, foodColor, playerControls, playermode, gamemode } from "./config.js";
 
 export function coordToString(coord) {
   return `${coord.y}_${coord.x}`;
@@ -63,9 +63,55 @@ export function hideMultiplayerElements() {
     element.style.display = 'none';
   });
 }
+//generates the html for the controls UI
+export function generateControlsUI(snakes) {
+  let controlsUIHTML = ``;
+  //create the div html for each player
+  for (let i = 0; i < playerControls.length; i++) {
+    let up, down, left, right;
+    if (playerControls[i].up.toUpperCase() === 'ARROWUP') {
+      up = '&#8593;';
+      down = '&#8595;';
+      left = '&#8592;';
+      right = '&#8594;';
+    }
+    else {
+      up = playerControls[i].up.toUpperCase();
+      down = playerControls[i].down.toUpperCase();
+      left = playerControls[i].left.toUpperCase();
+      right = playerControls[i].right.toUpperCase();
+    }
+    controlsUIHTML+=
+      `
+      <div id="player-controls-container">
+        <div id="player${i + 1}-rep-div"></div>
+        <div>-</div>
+        <div class="controlkeys-grid">
+          <div style="grid-row: 1; grid-column: 2;">${up}</div>
+          <div style="grid-row: 2; grid-column: 1;">${left}</div>
+          <div style="grid-row: 2; grid-column: 2;">${down}</div>
+          <div style="grid-row: 2; grid-column: 3;">${right}</div>
+        </div>
+      </div>
+      `;
+  }
+  document.querySelector('.right-panel').innerHTML = controlsUIHTML;
+
+  //assign style to the player rep divs
+  snakes.forEach((snake, i) => {
+    if (i < playerControls.length) {
+      const playerRepDiv = document.getElementById(`player${i + 1}-rep-div`);
+      assignCellStyles(playerRepDiv, snake.cellStyle);
+    }
+  });
+}
 //changes background color and border color and radius
 export function assignCellStyles(cell, styles) {
   cell.style.backgroundColor = styles.backgroundColor;
   cell.style.borderColor = styles.borderColor;
   cell.style.borderRadius = styles.borderRadius;
+}
+export function assignGamemodeTitle() {
+  const gamemodeTitle = document.getElementById('gamemode-title');
+  gamemodeTitle.textContent = gamemode;
 }

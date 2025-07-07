@@ -2,12 +2,14 @@ console.log('multiplayer js file running...');
 import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, gameContainerStyles, rows, cols } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, assignCellStyles } from "./utils.js";
-import { generateControlsUI } from "./multiplayer-utils.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, assignCellStyles, generateControlsUI, assignGamemodeTitle } from "./utils.js";
 
 //hide inappropriate elements from page
 hideMobileElements();
 hideSinglePlayerElements();
+
+//title
+assignGamemodeTitle();
 
 const grid = new Grid(); //create grid
 
@@ -15,7 +17,7 @@ const grid = new Grid(); //create grid
 grid.setupGrid();
 
 //create snakes/players and add them to the snakes js array
-export let snakes = [];
+let snakes = [];
 for (let i = 0; i < numOfPlayers; i++)
   snakes[i] = new Snake;
 //give unique IDs and colors to each snake
@@ -25,7 +27,7 @@ snakes.forEach((snake, i) => {
   snake.cellStyle.borderColor = playerColors[i] || 'white';
 });
 
-generateControlsUI();
+generateControlsUI(snakes);
 
 //use a js array like a queue to keep track of snakes that are dead
 let deadSnakesQueue = [];
