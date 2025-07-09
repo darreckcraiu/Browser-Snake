@@ -13,10 +13,13 @@
         <div class="game-grid"><!-- This inner html is calculated upon website loading from grid.js --></div>
 
         <div class="top-panel">
-          <p id="score" class="hidden-on-multiplayer">SCORE: 1</p>
-          <p id="highscore" class="hidden-on-multiplayer">HIGHSCORE: 5</p>
+          <p id="score" class="hidden-on-multiplayer title-text">SCORE: 1</p>
+          <p id="highscore" class="hidden-on-multiplayer title-text">HIGHSCORE: 5</p>
 
-          <p id="gamemode-title" class="hidden-on-singleplayer">GAMEMODE</p>
+          <div id="multiplayer-top-panel-div" class="hidden-on-singleplayer">
+            <div id="gamemode-title" class="hidden-on-singleplayer label title-text">GAMEMODE</div>
+            <div id="gamemode-description" class="hidden-on-singleplayer label subtitle-text">Last one standing wins!</div>
+          </div>
         </div>
 
         <div class="bottom-panel">
@@ -29,19 +32,38 @@
         </div>
 
         <div class="left-panel hidden-on-mobile hidden-on-singleplayer">
-          <button class="button">COMING SOON</button>
+          <div id="scores-container">
+            <div class="label title-text">SCORES</div>
+            <div id="player-scores-div"></div>
+          </div>        
+          
+          <div id="playercount-div">
+            <div class="label title-text" id="playercount-label">PLAYER COUNT</div>
+            <div id="playercount-buttons-container">
+              <button class="button">2</button>
+              <button class="button">3</button>
+              <button class="button">4</button>            
+            </div>            
+          </div>
+
+          <div id="gamemodes-div">
+            <div class="label title-text" id="playercount-label">GAMEMODE</div>
+            <div id="gamemode-buttons-container">
+              <button class="button">DEATHMATCH</button>
+              <button class="button">LENGTH BATTLE</button>
+            </div>            
+          </div>
+          
         </div>
 
-        <div class="right-panel hidden-on-mobile hidden-on-singleplayer">
-          <div id="player-controls-container"></div>
-        </div>
+        <div class="right-panel hidden-on-mobile hidden-on-singleplayer"></div>
 
         <div class="endscreen">
           <div class="endscreen-content">
-            <p class="hidden-on-multiplayer">GAME OVER</p>
+            <p class="hidden-on-multiplayer title-text">GAME OVER</p>
             <div class="hidden-on-singleplayer" style="display: flex; align-items: center;">
               <div id="multiplayer-winner-div" style="display: none;"></div>
-              <p id="multiplayer-winner-text">WON</p>
+              <p id="multiplayer-winner-text" class="title-text">WON</p>
             </div>
             <button id="retry-button" class="button" >Play Again</button>
           </div>
@@ -65,14 +87,14 @@
           <div class="rows-cols-div">
             <button class="button label-button" id="UI-width-button">UI Width</button>
             <div class="slider-textbox-div">
-              <input type="range" id="UI-width-slider" min="100" max="1000" value="650" step="1">
+              <input type="range" id="UI-width-slider" min="100" max="1000" value="700" step="1">
               <input type="text" id="UI-width-slider-textbox" placeholder="0" style="width: 10%;">
             </div>
           </div>
           <div class="rows-cols-div">
             <button class="button label-button" id="UI-height-button">UI Height</button>
             <div class="slider-textbox-div">
-              <input type="range" id="UI-height-slider" min="100" max="1000" value="650" step="1">
+              <input type="range" id="UI-height-slider" min="100" max="1000" value="700" step="1">
               <input type="text" id="UI-height-slider-textbox" placeholder="0" style="width: 10%;">
             </div>
           </div>

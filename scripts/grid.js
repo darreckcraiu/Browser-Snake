@@ -37,7 +37,7 @@ function setupButtons() {
     settingsScreen.classList.toggle('hidden');
 
     // Toggle button text
-    settingsButton.textContent = settingsButton.textContent === 'Settings' ? 'BACK' : 'Settings';
+    settingsButton.textContent = settingsButton.textContent === 'SETTINGS' ? 'BACK' : 'SETTINGS';
 
     // Toggle visibility of playermode button
     playermodeButton.classList.toggle('hidden');
@@ -87,6 +87,28 @@ function setupButtons() {
       localStorage.setItem('playermode', 'MULTIPLAYER');
     location.reload();
   });
+
+  //for the player count buttons
+  const playerCountButtonsContainer = document.getElementById('playercount-buttons-container');
+  const playerCountButtons = playerCountButtonsContainer.querySelectorAll('.button');
+  playerCountButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const displayNum = parseInt(button.textContent);
+      localStorage.setItem('numOfPlayers', displayNum);
+      location.reload();
+    });
+  });
+
+  //for the gamemode buttons
+  const gamemodeButtonsContainer = document.getElementById('gamemode-buttons-container');
+  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('button');
+  gamemodeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const displayText = button.textContent;
+      localStorage.setItem('gamemode', displayText);
+      location.reload();
+    });
+  });
 }
 
 function syncSliderWithTextbox(sliderId, textboxId) {
@@ -117,14 +139,18 @@ function setDefaultSliderAndTextbox() {
 }
 
 /**
- * Scale the font size of the SCORE and HIGHSCORE text.
+ * Scale the font size of the text of the UI.
  */
-function scaleScoreFonts() {
-  const score = document.getElementById('score');
-  score.style.fontSize = `${gameContainerStyles.width / 16}px`;
+export function scaleFonts() {
+  const titleTextElements = document.querySelectorAll('.title-text');
+  titleTextElements.forEach(text => {
+    text.style.fontSize = `${gameContainerStyles.width / 16}px`;
+  });
 
-  const highscore = document.getElementById('highscore');
-  highscore.style.fontSize = `${gameContainerStyles.width / 16}px`;
+  const subtitleTextElements = document.querySelectorAll('.subtitle-text');
+  subtitleTextElements.forEach(text => {
+    text.style.fontSize = `${gameContainerStyles.width / 26}px`;
+  });
 }
 
 /**
@@ -133,7 +159,7 @@ function scaleScoreFonts() {
 function initializeUI() {
   scaleEndscreenFont();
   setupButtons();
-  scaleScoreFonts();
+  scaleFonts();
   syncSliderWithTextbox('rows-slider', 'rows-slider-textbox');
   syncSliderWithTextbox('cols-slider', 'cols-slider-textbox');
   syncSliderWithTextbox('UI-width-slider', 'UI-width-slider-textbox');

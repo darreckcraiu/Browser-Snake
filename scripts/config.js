@@ -1,13 +1,12 @@
 //get settings and certain other variables from localstorage
 const settings = JSON.parse(localStorage.getItem("settings") || '{}');
 export const playermode = localStorage.getItem('playermode') || 'SINGLEPLAYER'; //singleplayer is the default
-export const gamemode = localStorage.getItem('gamemode');
 
 //default grid settings values
 const defaultRows = 12;
 const defaultCols = 12;
-const defaultWidth = 650;
-const defaultHeight = 650;
+const defaultWidth = 700;
+const defaultHeight = 700;
 
 export const rows = settings && Number(settings.rows) || defaultRows;
 export const cols = settings && Number(settings.cols) || defaultCols;
@@ -38,7 +37,15 @@ localStorage.setItem('settings', JSON.stringify({
 
 
 //FOR MULTIPLAYER
-export const numOfPlayers = 4;
+
+//default multiplayer settings
+const defaultNumOfPlayers = 4;
+const defaultGamemode = 'LENGTH BATTLE';
+const defaultLengthBattleScoreToWin = 10;
+
+export const lengthBattleScoreToWin = localStorage.getItem('lengthBattleScoreToWin') || defaultLengthBattleScoreToWin;
+export const gamemode = localStorage.getItem('gamemode') || defaultGamemode;
+export const numOfPlayers = parseInt(localStorage.getItem('numOfPlayers')) || defaultNumOfPlayers;
 export const playerControls = [
   { up: 'w', down: 's', left: 'a', right: 'd' }, // Player 0 (WASD)
   { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }, // Player 1 (arrowkeys)
@@ -51,3 +58,7 @@ export const playerColors = [
   'rgb(255, 252, 46)',
   'rgb(75, 0, 196)'
 ]
+export const gamemodeDescriptionMap = new Map([
+  ['LENGTH BATTLE', `First snake to reach ${lengthBattleScoreToWin} score wins!`],
+  ['DEATHMATCH', 'Last snake standing wins!']
+]); 

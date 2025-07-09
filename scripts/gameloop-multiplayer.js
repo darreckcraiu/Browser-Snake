@@ -2,32 +2,35 @@ console.log('multiplayer js file running...');
 import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, gameContainerStyles, rows, cols } from "./config.js";
 import Grid from "./grid.js";
 import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, assignCellStyles, generateControlsUI, assignGamemodeTitle } from "./utils.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, assignCellStyles, generateControlsUI, assignGamemodeText, generateScoresUI, updatePlayerScoreDiv, disableButtons } from "./utils.js";
 
 //hide inappropriate elements from page
 hideMobileElements();
 hideSinglePlayerElements();
 
+//disabled the selected buttons
+disableButtons();
+
 //title
-assignGamemodeTitle();
+assignGamemodeText();
 
 const grid = new Grid(); //create grid
 
 //render starting grid
 grid.setupGrid();
-
 //create snakes/players and add them to the snakes js array
 let snakes = [];
 for (let i = 0; i < numOfPlayers; i++)
   snakes[i] = new Snake;
 //give unique IDs and colors to each snake
 snakes.forEach((snake, i) => {
-  snake.ID = i; 
+  snake.ID = i + 1; 
   snake.cellStyle.backgroundColor = playerColors[i] || 'white';
   snake.cellStyle.borderColor = playerColors[i] || 'white';
 });
 
 generateControlsUI(snakes);
+generateScoresUI(snakes);
 
 //use a js array like a queue to keep track of snakes that are dead
 let deadSnakesQueue = [];
@@ -68,7 +71,7 @@ occupied.add(coordToString(temp));
 drawApple(appleCoord);
 
 //game loop
-const intervalId = 
+let intervalId = 
 setInterval(() => {
   console.log('loop counter');
   //respawn food if neccessary
@@ -99,6 +102,7 @@ setInterval(() => {
       appleCoord.y = -1;
       occupied.delete(coordToString(appleCoord));
       snake.score++;
+      updatePlayerScoreDiv(snake.ID, snake.score);
     }
     else {
       //this is skipped for the snake that ate the apple
@@ -162,6 +166,7 @@ setInterval(() => {
   if (numOfPlayers - deadSnakesQueue.length <= 1) {
     //stop main loop, show game over screen, and erase snake body piece by piece like an animation that accelerates as well
     clearInterval(intervalId); //stop the main game loop
+    intervalId = null;
 
     let timeoutInterval = 150;
     //recursive function
@@ -216,8 +221,9 @@ setInterval(() => {
 //EVENT LISTENERS FOR KEY PRESSES
 //key to stop game loop
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
+  if (event.key === 'Escape' && intervalId !== null) {
     clearInterval(intervalId);
+    intervalId = null;
     //tie game
     const endText = document.getElementById('multiplayer-winner-text');
     endText.textContent = 'TIE GAME';

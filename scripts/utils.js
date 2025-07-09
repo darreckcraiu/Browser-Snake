@@ -1,4 +1,5 @@
-import { rows, cols, foodColor, playerControls, playermode, gamemode } from "./config.js";
+import { rows, cols, foodColor, playerControls, gamemode, gameContainerStyles, numOfPlayers, gamemodeDescriptionMap } from "./config.js";
+import { scaleFonts } from "./grid.js";
 
 export function coordToString(coord) {
   return `${coord.y}_${coord.x}`;
@@ -63,11 +64,47 @@ export function hideMultiplayerElements() {
     element.style.display = 'none';
   });
 }
+function configurePlayerRepDivs(snakes) {
+  const sizingNum = gameContainerStyles.width / 12; //for sizing that comes next
+
+  //specific to each snake
+  snakes.forEach((snake, i) => {
+    if (i < playerControls.length) {
+      const playerRepDiv = document.querySelector(`.player${i + 1}-rep-div`);
+      assignCellStyles(playerRepDiv, snake.cellStyle);
+      playerRepDiv.style.width = `${sizingNum}px`;
+      playerRepDiv.style.height = `${sizingNum}px`;
+    }
+  });
+
+  //general for all player rep divs
+  const playerRepDivs = document.querySelectorAll('.player-rep-div');
+  playerRepDivs.forEach(div => {
+    div.style.display = 'flex';
+    div.style.alignItems = 'center';      // vertical centering
+    div.style.justifyContent = 'center';  // horizontal centering
+  });
+}
+function centerControlKeyDivText() {
+  const controlGrids = document.querySelectorAll('.controlkeys-grid');
+  controlGrids.forEach(grid => {
+    const controlDivs = grid.querySelectorAll('div');
+
+    controlDivs.forEach(div => {
+      div.style.display = 'flex';
+      div.style.alignItems = 'center';      // vertical centering
+      div.style.justifyContent = 'center';  // horizontal centering
+    });
+  });
+}
 //generates the html for the controls UI
 export function generateControlsUI(snakes) {
   let controlsUIHTML = ``;
   //create the div html for each player
-  for (let i = 0; i < playerControls.length; i++) {
+  let num = numOfPlayers;
+  if (numOfPlayers > playerControls.length)
+    num = playerControls.length;
+  for (let i = 0; i < num; i++) {
     let up, down, left, right;
     if (playerControls[i].up.toUpperCase() === 'ARROWUP') {
       up = '&#8593;';
@@ -83,27 +120,67 @@ export function generateControlsUI(snakes) {
     }
     controlsUIHTML+=
       `
-      <div id="player-controls-container">
-        <div id="player${i + 1}-rep-div"></div>
-        <div>-</div>
+      <div class="player-controls-container">
+        <div class="player${i + 1}-rep-div player-rep-div"></div>
+        <div style="pointer-events: none;">-</div>
         <div class="controlkeys-grid">
-          <div style="grid-row: 1; grid-column: 2;">${up}</div>
-          <div style="grid-row: 2; grid-column: 1;">${left}</div>
-          <div style="grid-row: 2; grid-column: 2;">${down}</div>
-          <div style="grid-row: 2; grid-column: 3;">${right}</div>
+          <div class='title-text' style="grid-row: 1; grid-column: 2;">${up}</div>
+          <div class='title-text' style="grid-row: 2; grid-column: 1;">${left}</div>
+          <div class='title-text' style="grid-row: 2; grid-column: 2;">${down}</div>
+          <div class='title-text' style="grid-row: 2; grid-column: 3;">${right}</div>
         </div>
       </div>
       `;
   }
   document.querySelector('.right-panel').innerHTML = controlsUIHTML;
 
-  //assign style to the player rep divs
+  //assign styles and size to the player rep divs
+  const sizingNum = gameContainerStyles.width / 12; //for sizing that comes next
+
+  //assign the size of each grid cols and rows
+  const playerControlsContainers = document.querySelectorAll('.player-controls-container');
+  playerControlsContainers.forEach(container => {
+    const controlKeysGrids = container.querySelectorAll('.controlkeys-grid');
+      controlKeysGrids.forEach(grid => {
+        grid.style.gridTemplateColumns = `repeat(3,${sizingNum}px)`;
+        grid.style.gridTemplateRows = `repeat(2,${sizingNum}px)`;        
+    });
+  });
+
+  configurePlayerRepDivs(snakes);
+  centerControlKeyDivText();
+  scaleFonts();
+}
+//generates the html for the controls UI
+export function generateScoresUI(snakes) {
+  let scoresUIHTML = ``;
+  //create the div html for each player
+  let num = numOfPlayers;
+  if (numOfPlayers > playerControls.length)
+    num = playerControls.length;
+  for (let i = 0; i < num; i++) {
+    scoresUIHTML+=
+      `      
+        <div class="player${i + 1}-rep-div player-rep-div subtitle-text">1</div>      
+      `;
+  }  
+  const playerScoresDiv = document.getElementById('player-scores-div');
+  playerScoresDiv.innerHTML = scoresUIHTML
+  
+  //assign styles and size to the player rep divs
+  const sizingNum = gameContainerStyles.width / 12; //for sizing that comes next
+
   snakes.forEach((snake, i) => {
     if (i < playerControls.length) {
-      const playerRepDiv = document.getElementById(`player${i + 1}-rep-div`);
+      const playerRepDiv = document.querySelector(`.player${i + 1}-rep-div`);
       assignCellStyles(playerRepDiv, snake.cellStyle);
+      playerRepDiv.style.width = `${sizingNum}px`;
+      playerRepDiv.style.height = `${sizingNum}px`;
     }
   });
+
+  configurePlayerRepDivs(snakes);
+  scaleFonts();
 }
 //changes background color and border color and radius
 export function assignCellStyles(cell, styles) {
@@ -111,7 +188,35 @@ export function assignCellStyles(cell, styles) {
   cell.style.borderColor = styles.borderColor;
   cell.style.borderRadius = styles.borderRadius;
 }
-export function assignGamemodeTitle() {
+export function assignGamemodeText() {
   const gamemodeTitle = document.getElementById('gamemode-title');
   gamemodeTitle.textContent = gamemode;
+  gamemodeTitle.style.color = 'yellow';
+  const gamemodeDescription = document.getElementById('gamemode-description');
+  gamemodeDescription.textContent = gamemodeDescriptionMap.get(gamemode);
+  
+}
+export function updatePlayerScoreDiv(playerNum, score) {
+  const playerScoresDiv = document.getElementById('player-scores-div');
+  const playerDiv = playerScoresDiv.querySelector(`.player${playerNum}-rep-div`);
+  playerDiv.textContent = score;
+}
+export function disableButtons() {
+  //change the selected playerCount button
+  const playerCountButtonsContainer = document.getElementById('playercount-buttons-container');
+  const playerCountButtons = playerCountButtonsContainer.querySelectorAll('button');
+  playerCountButtons.forEach(button => {
+    if (parseInt(button.textContent) === numOfPlayers) {
+      button.classList.add('selected-button');
+    }
+  });
+
+  //change the selected gamemode button
+  const gamemodeButtonsContainer = document.getElementById('gamemode-buttons-container');
+  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('button');
+  gamemodeButtons.forEach(button => {
+    if (button.textContent === gamemode) {
+      button.classList.add('selected-button');
+    }
+  });
 }

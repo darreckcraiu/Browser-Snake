@@ -67,6 +67,9 @@
 
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+
+  justify-content: flex-start;
+  gap: 10%;
 }
 
 .right-panel {
@@ -91,4 +94,51 @@
 }
 #settings-button:hover {
   background-color: rgb(231, 231, 44);
+}
+
+#playercount-label {
+  width: 100%;
+}
+
+#playercount-div,
+#gamemodes-div,
+#scores-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#playercount-buttons-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+#playercount-buttons-container button {
+  width: 90%;
+  height: 100%;
+}
+
+#gamemode-buttons-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+}
+
+#gamemode-buttons-container button {
+  width: 80%;
+}
+
+#player-scores-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.label {
+  text-align: center;
 }
