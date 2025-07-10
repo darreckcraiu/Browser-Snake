@@ -104,7 +104,7 @@ setInterval(() => {
     //recursive function
     function eraseTailWithAcceleration() {
       // this if statement only runs if the tail hasn't caught up to the head yet
-      if (snake.tailIndex !== (snake.headIndex + 1) % snakeArrSize) {
+      if (snake.hasLength()) {
         snake.eraseTail();
         snake.advanceTailIndex();
 

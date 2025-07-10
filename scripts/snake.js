@@ -64,4 +64,21 @@ export default class Snake {
 		this.coordsSet.delete(coordToString(coord));
 		this.tailIndex = (this.tailIndex + 1) % snakeArrSize;
 	}
+
+  reset() {
+    this.coordsSet.clear();
+    this.dir = {y: 0, x: 0};
+    this.nextDir = {y: 0, x: 0};
+    this.headIndex = 0;
+    this.tailIndex = 0;
+    this.score = 1;
+    this.alive = true;
+  }
+
+  hasLength() {
+    //if the tail index has passed ahead of the head index, there is no length. The first 2 positions after passing the head index are checked because in respawn gamemodes when 2 players kill each other on the same frame, checking only for the first position after the head spawn only one of the snakes and the other is never spawned in
+    return this.tailIndex < ((this.headIndex + 1) % snakeArrSize)
+    || this.tailIndex < ((this.headIndex + 2) % snakeArrSize);
+  }
+
 }

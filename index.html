@@ -18,7 +18,7 @@
 
           <div id="multiplayer-top-panel-div" class="hidden-on-singleplayer">
             <div id="gamemode-title" class="hidden-on-singleplayer label title-text">GAMEMODE</div>
-            <div id="gamemode-description" class="hidden-on-singleplayer label subtitle-text">Last one standing wins!</div>
+            <div id="gamemode-description" class="hidden-on-singleplayer label subtitle-text">Game description</div>
           </div>
         </div>
 
@@ -49,8 +49,13 @@
           <div id="gamemodes-div">
             <div class="label title-text" id="playercount-label">GAMEMODE</div>
             <div id="gamemode-buttons-container">
-              <button class="button">DEATHMATCH</button>
-              <button class="button">LENGTH BATTLE</button>
+              <div>
+                <button class="button primary-gamemode-button">LENGTH BATTLE</button>
+                <button class="button gear-button">⚙️</button>
+              </div>
+              <div>
+                <button class="button primary-gamemode-button">DEATHMATCH</button>
+              </div>              
             </div>            
           </div>
           
@@ -109,13 +114,24 @@
 
     <script type="module">
       //create a script element and choose which js file will be its src based on the gamemode in localstorage
-      import { playermode } from "./scripts/config.js";
+      import { playermode, gamemode } from "./scripts/config.js";
       const script = document.createElement('script');
       script.type = 'module';
       
-      script.src = playermode === 'MULTIPLAYER' 
-      ? "./scripts/gameloop-multiplayer.js" 
-      : "./scripts/gameloop.js";
+      //choose source file based on saved playermode and gamemode
+      if (playermode === 'SINGLEPLAYER') {
+        script.src = "./scripts/gameloop.js";
+      }
+      else {
+        switch (gamemode) {
+          case 'LENGTH BATTLE': script.src = "./scripts/gameloop-lengthbattle.js";
+          break;
+          case 'DEATHMATCH': script.src = "./scripts/gameloop-multiplayer.js";
+          break;
+          default: script.src = "./scripts/gameloop-lengthbattle.js";
+          break;
+        }
+      }
 
       document.body.appendChild(script);
     </script>

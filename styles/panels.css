@@ -130,8 +130,28 @@
   gap: 7px;
 }
 
-#gamemode-buttons-container button {
+#gamemode-buttons-container div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+#gamemode-buttons-container .primary-gamemode-button {
   width: 80%;
+}
+
+#gamemode-buttons-container button {
+  height: 100%;
+}
+
+.gear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 18%;
 }
 
 #player-scores-div {

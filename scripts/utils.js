@@ -196,9 +196,9 @@ export function assignGamemodeText() {
   gamemodeDescription.textContent = gamemodeDescriptionMap.get(gamemode);
   
 }
-export function updatePlayerScoreDiv(playerNum, score) {
+export function updatePlayerScoreDiv(snakeID, score) {
   const playerScoresDiv = document.getElementById('player-scores-div');
-  const playerDiv = playerScoresDiv.querySelector(`.player${playerNum}-rep-div`);
+  const playerDiv = playerScoresDiv.querySelector(`.player${snakeID}-rep-div`);
   playerDiv.textContent = score;
 }
 export function disableButtons() {
@@ -213,7 +213,7 @@ export function disableButtons() {
 
   //change the selected gamemode button
   const gamemodeButtonsContainer = document.getElementById('gamemode-buttons-container');
-  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('button');
+  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('.primary-gamemode-button');
   gamemodeButtons.forEach(button => {
     if (button.textContent === gamemode) {
       button.classList.add('selected-button');

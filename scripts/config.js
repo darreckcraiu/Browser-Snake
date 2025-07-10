@@ -39,7 +39,7 @@ localStorage.setItem('settings', JSON.stringify({
 //FOR MULTIPLAYER
 
 //default multiplayer settings
-const defaultNumOfPlayers = 4;
+const defaultNumOfPlayers = 2;
 const defaultGamemode = 'LENGTH BATTLE';
 const defaultLengthBattleScoreToWin = 10;
 
@@ -60,5 +60,5 @@ export const playerColors = [
 ]
 export const gamemodeDescriptionMap = new Map([
   ['LENGTH BATTLE', `First snake to reach ${lengthBattleScoreToWin} score wins!`],
-  ['DEATHMATCH', 'Last snake standing wins!']
+  ['DEATHMATCH', 'Last snake slithering wins!']
 ]); 

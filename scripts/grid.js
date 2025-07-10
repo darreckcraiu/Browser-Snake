@@ -101,7 +101,7 @@ function setupButtons() {
 
   //for the gamemode buttons
   const gamemodeButtonsContainer = document.getElementById('gamemode-buttons-container');
-  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('button');
+  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('.primary-gamemode-button');
   gamemodeButtons.forEach(button => {
     button.addEventListener('click', () => {
       const displayText = button.textContent;
