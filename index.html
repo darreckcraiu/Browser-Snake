@@ -13,74 +13,140 @@
         <div class="game-grid"><!-- This inner html is calculated upon website loading from grid.js --></div>
 
         <div class="top-panel">
-          <p id="score">SCORE: 1</p>
-          <p id="highscore">HIGHSCORE: 5</p>
+          <p id="score" class="hidden-on-multiplayer title-text">SCORE: 1</p>
+          <p id="highscore" class="hidden-on-multiplayer title-text">HIGHSCORE: 5</p>
+
+          <div id="multiplayer-top-panel-div" class="hidden-on-singleplayer">
+            <div id="gamemode-title" class="hidden-on-singleplayer label title-text">GAMEMODE</div>
+            <div id="gamemode-description" class="hidden-on-singleplayer label subtitle-text">Game description</div>
+          </div>
         </div>
 
         <div class="bottom-panel">
-          <button class="button hidden-on-mobile" id="multiplayer-button">COMING SOON</button>
-          <button class="button" id="settings-button">Settings</button>
+          <button id="playermode-button" class="button hidden-on-mobile">PLAY MULTIPLAYER</button>
+          <button id="settings-button" class="button" >SETTINGS</button>
           <div id="mobile-controls" class="hidden-on-desktop">
            <div id="joystick-base"></div> 
            <div id="joystick-knob"></div>
-        </div>
-        </div>
-
-        <div class="left-panel hidden-on-mobile">
-          <button class="button">COMING SOON</button>
+          </div>
         </div>
 
-        <div class="right-panel hidden-on-mobile">
-          <button class="button">COMING SOON</button>
+        <div class="left-panel hidden-on-mobile hidden-on-singleplayer">
+          <div id="scores-container">
+            <div class="label title-text">SCORES</div>
+            <div id="player-scores-div"></div>
+          </div>        
+          
+          <div id="playercount-div">
+            <div class="label title-text" id="playercount-label">PLAYER COUNT</div>
+            <div id="playercount-buttons-container">
+              <button class="button">2</button>
+              <button class="button">3</button>
+              <button class="button">4</button>            
+            </div>            
+          </div>
+
+          <div id="gamemodes-div">
+            <div class="label title-text" id="playercount-label">GAMEMODE</div>
+            <div id="gamemode-buttons-container">
+              <div id="length battle-buttons-div">
+                <button class="button primary-gamemode-button">LENGTH BATTLE</button>
+                <button class="button gamemode-settings-button" id="lengthbattle-settings-button">⚙️</button>
+              </div>
+              <div id="deathmatch-buttons-div">
+                <button class="button primary-gamemode-button">DEATHMATCH</button>
+              </div>              
+            </div>            
+          </div>
+          
         </div>
+
+        <div class="right-panel hidden-on-mobile hidden-on-singleplayer"></div>
 
         <div class="endscreen">
           <div class="endscreen-content">
-            <p>GAME OVER</p>
-            <button class="button" id="retry-button">Play Again</button>
+            <p class="hidden-on-multiplayer title-text">GAME OVER</p>
+            <div class="hidden-on-singleplayer" style="display: flex; align-items: center;">
+              <div id="multiplayer-winner-div" style="display: none;"></div>
+              <p id="multiplayer-winner-text" class="title-text">WON</p>
+            </div>
+            <button id="retry-button" class="button" >Play Again</button>
           </div>
         </div>
-
+        
         <div class="settings-screen hidden">
-          <div class="rows-cols-div">
-            <button class="button label-button" id="rows-button">rows</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="rows-slider" min="5" max="100" value="12" step="1">
-              <input type="text" id="rows-slider-textbox" placeholder="0">
+          <div class="general-settings-div">          
+            <div class="rows-cols-div">
+              <button class="button label-button" id="rows-button">rows</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="rows-slider" min="5" max="100" value="12" step="1">
+                <input type="text" id="rows-slider-textbox" placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="rows-cols-div">
-            <button class="button label-button" id="cols-button">cols</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="cols-slider" min="5" max="100" value="12" step="1">
-              <input type="text" id="cols-slider-textbox" placeholder="0">
+            <div class="rows-cols-div">
+              <button class="button label-button" id="cols-button">cols</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="cols-slider" min="5" max="100" value="12" step="1">
+                <input type="text" id="cols-slider-textbox" placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="rows-cols-div">
-            <button class="button label-button" id="UI-width-button">UI Width</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="UI-width-slider" min="100" max="1000" value="650" step="1">
-              <input type="text" id="UI-width-slider-textbox" placeholder="0" style="width: 10%;">
+            <div class="rows-cols-div">
+              <button class="button label-button" id="UI-width-button">UI Width</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="UI-width-slider" min="100" max="1000" value="700" step="1">
+                <input type="text" id="UI-width-slider-textbox" placeholder="0" style="width: 10%;">
+              </div>
             </div>
-          </div>
-          <div class="rows-cols-div">
-            <button class="button label-button" id="UI-height-button">UI Height</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="UI-height-slider" min="100" max="1000" value="650" step="1">
-              <input type="text" id="UI-height-slider-textbox" placeholder="0" style="width: 10%;">
+            <div class="rows-cols-div">
+              <button class="button label-button" id="UI-height-button">UI Height</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="UI-height-slider" min="100" max="1000" value="700" step="1">
+                <input type="text" id="UI-height-slider-textbox" placeholder="0" style="width: 10%;">
+              </div>
             </div>
           </div>
 
-          <button class="button apply-changes-button">Apply Changes</button>
-          <button class="button reset-to-default-button">Reset to Default</button>
-          <button class="button" id="reset-highscore-button">RESET HIGHSCORE</button>
+          <div class="rows-cols-div lengthbattle-settings-div">
+            <button class="button label-button" id="lengthbattle-score-button">Score to win</button>
+            <div class="slider-textbox-div">
+              <input type="range" id="lengthbattle-score-slider" min="2" max="100" value="10" step="1">
+              <input type="text" id="lengthbattle-score-slider-textbox" placeholder="0">
+            </div>
+          </div>
+          
+          <div class="universal-settings-buttons-div">          
+            <button class="button apply-changes-button">Apply Changes</button>
+            <button class="button reset-to-default-button">Reset to Default</button>
+            <button id="reset-highscore-button" class="button hidden-on-multiplayer">RESET HIGHSCORE</button>
+          </div>
+
         </div>
       </div>
 
     </div>
 
+    <script type="module">
+      //create a script element and choose which js file will be its src based on the gamemode in localstorage
+      import { playermode, gamemode } from "./scripts/config.js";
+      const script = document.createElement('script');
+      script.type = 'module';
+      
+      //choose source file based on saved playermode and gamemode
+      if (playermode === 'SINGLEPLAYER') {
+        script.src = "./scripts/gameloop.js";
+      }
+      else {
+        switch (gamemode) {
+          case 'LENGTH BATTLE': script.src = "./scripts/gameloop-lengthbattle.js";
+          break;
+          case 'DEATHMATCH': script.src = "./scripts/gameloop-multiplayer.js";
+          break;
+          default: script.src = "./scripts/gameloop-lengthbattle.js";
+          break;
+        }
+      }
 
-    <script src="scripts/config.js" type="module"></script>
-    <script src="scripts/gameloop.js" type="module"></script>
+      document.body.appendChild(script);
+    </script>
   </body>
 </html>

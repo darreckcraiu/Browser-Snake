@@ -1,9 +1,4 @@
-import { rows, cols, cellStyles, gameContainerStyles } from "./config.js";
-
-//first set the width and height of the center panel to the same that the game grid will have
-const centerPanel = document.querySelector('.center-panel');
-centerPanel.style.height = gameContainerStyles.height;
-centerPanel.style.width = gameContainerStyles.width;
+import { rows, cols, cellStyles, gameContainerStyles, playermode, foodColor, lengthBattleScoreToWin } from "./config.js";
 
 /* ---------------------- UI SCALING FUNCTIONS ---------------------- */
 
@@ -32,20 +27,40 @@ function setupButtons() {
     location.reload();
   });
 
+  //function for making the settings screen visible/not visible
+  function toggleSettingsScreenVisiblity() {
+    const settingsScreen = document.querySelector('.settings-screen');
+    settingsScreen.classList.toggle('hidden');
+
+    const settingsButton = document.getElementById('settings-button'); 
+    // Toggle button text
+    settingsButton.textContent = settingsButton.textContent === 'SETTINGS' ? 'BACK' : 'SETTINGS';
+
+    const playermodeButton = document.getElementById('playermode-button');
+    // Toggle visibility of playermode button
+    playermodeButton.classList.toggle('hidden');
+  }
+  
   // Individual behavior for settings button
   const settingsButton = document.getElementById('settings-button');
   settingsButton.addEventListener('click', () => {
     const settingsScreen = document.querySelector('.settings-screen');
-    const multiplayerButton = document.getElementById('multiplayer-button');
 
-    // Toggle visibility of settings screen
-    settingsScreen.classList.toggle('hidden');
+    toggleSettingsScreenVisiblity();
 
-    // Toggle button text
-    settingsButton.textContent = settingsButton.textContent === 'Settings' ? 'BACK' : 'Settings';
-
-    // Toggle visibility of multiplayer button
-    multiplayerButton.classList.toggle('hidden');
+    //only show the general and universal settings
+    const directChildDivs = settingsScreen.querySelectorAll(':scope > div');
+    console.log(directChildDivs)
+    directChildDivs.forEach(div => {
+      //if it doesnt contain the universal settings or general settings class, hide it
+      if (!div.classList.contains('general-settings-div') && !div.classList.contains('universal-settings-buttons-div')) {
+        if (!div.classList.contains('hidden'))
+          div.classList.toggle('hidden');
+      }
+      else if (div.classList.contains('hidden')) {
+        div.classList.toggle('hidden');
+      }
+    });
   });
 
   // for RESET HIGHSCORE button
@@ -58,25 +73,93 @@ function setupButtons() {
   // for Update Grid button
   const applyChangesButton = document.querySelector('.apply-changes-button');
   applyChangesButton.addEventListener('click', () => {
-    //get the values from the rows and cols sliders and change the grid based on them
-    const rows = Number(document.getElementById('rows-slider').value);
-    const cols = Number(document.getElementById('cols-slider').value);
-    const width = Number(document.getElementById('UI-width-slider').value);
-    const height = Number(document.getElementById('UI-height-slider').value);
-    localStorage.setItem('settings', JSON.stringify({
-      rows: rows,
-      cols: cols,
-      width: width,
-      height: height
-    }));
+    if (!document.querySelector('.general-settings-div').classList.contains('hidden')) {    
+      //get the values from the rows and cols sliders and change the grid based on them
+      const rows = Number(document.getElementById('rows-slider').value);
+      const cols = Number(document.getElementById('cols-slider').value);
+      const width = Number(document.getElementById('UI-width-slider').value);
+      const height = Number(document.getElementById('UI-height-slider').value);
+      localStorage.setItem('settings', JSON.stringify({
+        rows: rows,
+        cols: cols,
+        width: width,
+        height: height
+      }));
+    }
+    else {
+      const lengthBattleScoreToWin = Number(document.getElementById('lengthbattle-score-slider').value);
+      localStorage.setItem('lengthBattleScoreToWin', lengthBattleScoreToWin);
+    }
     location.reload();
   });
 
   // for Reset Grid button
   const resetToDefaultButton = document.querySelector('.reset-to-default-button');
   resetToDefaultButton.addEventListener('click', () => {
-    localStorage.removeItem('settings');
+    if (!document.querySelector('.general-settings-div').classList.contains('hidden')) {
+      localStorage.removeItem('settings');
+    }
+    else {
+      localStorage.removeItem('lengthBattleScoreToWin');
+    }
     location.reload();
+  });
+
+  // for playermode button
+  const playermodeButton = document.getElementById('playermode-button');
+  if (playermode === 'SINGLEPLAYER')
+    playermodeButton.textContent = 'PLAY MULTIPLAYER';
+  else
+    playermodeButton.textContent = 'PLAY SINGLEPLAYER';
+  playermodeButton.addEventListener('click', () => {
+    if (playermodeButton.textContent === 'PLAY SINGLEPLAYER')
+      localStorage.setItem('playermode', 'SINGLEPLAYER');
+    else
+      localStorage.setItem('playermode', 'MULTIPLAYER');
+    location.reload();
+  });
+
+  //for the player count buttons
+  const playerCountButtonsContainer = document.getElementById('playercount-buttons-container');
+  const playerCountButtons = playerCountButtonsContainer.querySelectorAll('.button');
+  playerCountButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const displayNum = parseInt(button.textContent);
+      localStorage.setItem('numOfPlayers', displayNum);
+      location.reload();
+    });
+  });
+
+  //for the gamemode buttons
+  const gamemodeButtonsContainer = document.getElementById('gamemode-buttons-container');
+  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('.primary-gamemode-button');
+  gamemodeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const displayText = button.textContent;
+      localStorage.setItem('gamemode', displayText);
+      location.reload();
+    });
+  });
+
+  //for lengthbattle settings button
+  const lengthBattleSettingsButton = document.getElementById('lengthbattle-settings-button');
+  lengthBattleSettingsButton.addEventListener('click', () => {
+    //open general settings but hide everything that isn't a setting for the gamemode
+    toggleSettingsScreenVisiblity();
+
+    const settingsScreen = document.querySelector('.settings-screen');
+    const directChildDivs = settingsScreen.querySelectorAll(':scope > div'); //select only the direct descendant divs of settingsScreen
+    directChildDivs.forEach(div => {
+      //if it doesnt contain the universal settings or length battle class, hide it
+      if (!div.classList.contains('lengthbattle-settings-div') && !div.classList.contains('universal-settings-buttons-div')) {
+        if (!div.classList.contains('hidden'))
+          div.classList.toggle('hidden');
+      }
+      //also unhide the lengthbattle settings just in case
+      const lengthBattleSettingsDiv = document.querySelector('.lengthbattle-settings-div');
+      if (lengthBattleSettingsDiv.classList.contains('hidden'))
+        lengthBattleSettingsDiv.classList.toggle('hidden');
+    });
   });
 }
 
@@ -105,17 +188,23 @@ function setDefaultSliderAndTextbox() {
   document.getElementById('UI-width-slider-textbox').value = gameContainerStyles.width;
   document.getElementById('UI-height-slider').value = gameContainerStyles.height;
   document.getElementById('UI-height-slider-textbox').value = gameContainerStyles.height;
+  document.getElementById('lengthbattle-score-slider').value = lengthBattleScoreToWin;
+  document.getElementById('lengthbattle-score-slider-textbox').value = lengthBattleScoreToWin;
 }
 
 /**
- * Scale the font size of the SCORE and HIGHSCORE text.
+ * Scale the font size of the text of the UI.
  */
-function scaleScoreFonts() {
-  const score = document.getElementById('score');
-  score.style.fontSize = `${gameContainerStyles.width / 16}px`;
+export function scaleFonts() {
+  const titleTextElements = document.querySelectorAll('.title-text');
+  titleTextElements.forEach(text => {
+    text.style.fontSize = `${gameContainerStyles.width / 16}px`;
+  });
 
-  const highscore = document.getElementById('highscore');
-  highscore.style.fontSize = `${gameContainerStyles.width / 16}px`;
+  const subtitleTextElements = document.querySelectorAll('.subtitle-text');
+  subtitleTextElements.forEach(text => {
+    text.style.fontSize = `${gameContainerStyles.width / 26}px`;
+  });
 }
 
 /**
@@ -124,11 +213,12 @@ function scaleScoreFonts() {
 function initializeUI() {
   scaleEndscreenFont();
   setupButtons();
-  scaleScoreFonts();
+  scaleFonts();
   syncSliderWithTextbox('rows-slider', 'rows-slider-textbox');
   syncSliderWithTextbox('cols-slider', 'cols-slider-textbox');
   syncSliderWithTextbox('UI-width-slider', 'UI-width-slider-textbox');
   syncSliderWithTextbox('UI-height-slider', 'UI-height-slider-textbox');
+  syncSliderWithTextbox('lengthbattle-score-slider','lengthbattle-score-slider-textbox');
   setDefaultSliderAndTextbox();
 }
 
@@ -166,7 +256,9 @@ export default class Grid {
     let gridHTML = '';
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        gridHTML += `<div id="${this.array[i][j]}" class="js-grid-cell"></div>`;
+        gridHTML += `<div id="${this.array[i][j]}" class="js-grid-cell" style='display: flex'>
+          <div style='width: 100%; height: 100%'></div>
+        </div>`;
       }
     }
     container.innerHTML = gridHTML;
@@ -175,7 +267,7 @@ export default class Grid {
     const cells = document.querySelectorAll('.js-grid-cell');
     cells.forEach(cell => {
       Object.assign(cell.style, {
-        backgroundColor: cellStyles.color,
+        backgroundColor: cellStyles.backgroundColor,
         border: cellStyles.border
       });
     });

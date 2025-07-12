@@ -23,7 +23,7 @@
   width: 100%;
   height: 17%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -39,7 +39,7 @@
   height: 12%;
   
   display: flex;
-  justify-content: center; /* centered by default */
+  justify-content: space-evenly; /* centered by default */
   align-items: center;
   text-align: center;
 
@@ -58,6 +58,7 @@
 
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
 }
 
 .left-panel {
@@ -66,6 +67,9 @@
 
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+
+  justify-content: flex-start;
+  gap: 10%;
 }
 
 .right-panel {
@@ -74,13 +78,14 @@
 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+
+
 }
 
-#multiplayer-button {
+#playermode-button {
   background-color: blueviolet;
-  margin-right: 100px;
 }
-#multiplayer-button:hover {
+#playermode-button:hover {
   background-color: rgb(158, 57, 252);
 }
 
@@ -89,4 +94,71 @@
 }
 #settings-button:hover {
   background-color: rgb(231, 231, 44);
+}
+
+#playercount-label {
+  width: 100%;
+}
+
+#playercount-div,
+#gamemodes-div,
+#scores-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#playercount-buttons-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+#playercount-buttons-container button {
+  width: 90%;
+  height: 100%;
+}
+
+#gamemode-buttons-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+}
+
+#gamemode-buttons-container div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+#gamemode-buttons-container .primary-gamemode-button {
+  width: 80%;
+}
+
+#gamemode-buttons-container button {
+  height: 100%;
+}
+
+.gear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 18%;
+}
+
+#player-scores-div {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.label {
+  text-align: center;
 }
