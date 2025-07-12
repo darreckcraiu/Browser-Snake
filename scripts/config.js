@@ -24,7 +24,7 @@ export const cellStyles = {
   borderRadius: '0'
 }
 export const gridBorderColor = 'rgb(255, 255, 255)';
-export const gameloopInterval = window.innerWidth > 1000 ? 100 : 150;
+export const gameloopInterval = window.innerWidth > 1000 ? 120 : 150;
 
 //save settings to local storage
 localStorage.setItem('settings', JSON.stringify({
@@ -43,7 +43,7 @@ const defaultNumOfPlayers = 2;
 const defaultGamemode = 'LENGTH BATTLE';
 const defaultLengthBattleScoreToWin = 10;
 
-export const lengthBattleScoreToWin = localStorage.getItem('lengthBattleScoreToWin') || defaultLengthBattleScoreToWin;
+export const lengthBattleScoreToWin = parseInt(localStorage.getItem('lengthBattleScoreToWin')) || defaultLengthBattleScoreToWin;
 export const gamemode = localStorage.getItem('gamemode') || defaultGamemode;
 export const numOfPlayers = parseInt(localStorage.getItem('numOfPlayers')) || defaultNumOfPlayers;
 export const playerControls = [

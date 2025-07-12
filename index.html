@@ -49,11 +49,11 @@
           <div id="gamemodes-div">
             <div class="label title-text" id="playercount-label">GAMEMODE</div>
             <div id="gamemode-buttons-container">
-              <div>
+              <div id="length battle-buttons-div">
                 <button class="button primary-gamemode-button">LENGTH BATTLE</button>
-                <button class="button gear-button">⚙️</button>
+                <button class="button gamemode-settings-button" id="lengthbattle-settings-button">⚙️</button>
               </div>
-              <div>
+              <div id="deathmatch-buttons-div">
                 <button class="button primary-gamemode-button">DEATHMATCH</button>
               </div>              
             </div>            
@@ -73,40 +73,53 @@
             <button id="retry-button" class="button" >Play Again</button>
           </div>
         </div>
-
+        
         <div class="settings-screen hidden">
-          <div class="rows-cols-div">
-            <button class="button label-button" id="rows-button">rows</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="rows-slider" min="5" max="100" value="12" step="1">
-              <input type="text" id="rows-slider-textbox" placeholder="0">
+          <div class="general-settings-div">          
+            <div class="rows-cols-div">
+              <button class="button label-button" id="rows-button">rows</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="rows-slider" min="5" max="100" value="12" step="1">
+                <input type="text" id="rows-slider-textbox" placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="rows-cols-div">
-            <button class="button label-button" id="cols-button">cols</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="cols-slider" min="5" max="100" value="12" step="1">
-              <input type="text" id="cols-slider-textbox" placeholder="0">
+            <div class="rows-cols-div">
+              <button class="button label-button" id="cols-button">cols</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="cols-slider" min="5" max="100" value="12" step="1">
+                <input type="text" id="cols-slider-textbox" placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="rows-cols-div">
-            <button class="button label-button" id="UI-width-button">UI Width</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="UI-width-slider" min="100" max="1000" value="700" step="1">
-              <input type="text" id="UI-width-slider-textbox" placeholder="0" style="width: 10%;">
+            <div class="rows-cols-div">
+              <button class="button label-button" id="UI-width-button">UI Width</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="UI-width-slider" min="100" max="1000" value="700" step="1">
+                <input type="text" id="UI-width-slider-textbox" placeholder="0" style="width: 10%;">
+              </div>
             </div>
-          </div>
-          <div class="rows-cols-div">
-            <button class="button label-button" id="UI-height-button">UI Height</button>
-            <div class="slider-textbox-div">
-              <input type="range" id="UI-height-slider" min="100" max="1000" value="700" step="1">
-              <input type="text" id="UI-height-slider-textbox" placeholder="0" style="width: 10%;">
+            <div class="rows-cols-div">
+              <button class="button label-button" id="UI-height-button">UI Height</button>
+              <div class="slider-textbox-div">
+                <input type="range" id="UI-height-slider" min="100" max="1000" value="700" step="1">
+                <input type="text" id="UI-height-slider-textbox" placeholder="0" style="width: 10%;">
+              </div>
             </div>
           </div>
 
-          <button class="button apply-changes-button">Apply Changes</button>
-          <button class="button reset-to-default-button">Reset to Default</button>
-          <button id="reset-highscore-button" class="button hidden-on-multiplayer">RESET HIGHSCORE</button>
+          <div class="rows-cols-div lengthbattle-settings-div">
+            <button class="button label-button" id="lengthbattle-score-button">Score to win</button>
+            <div class="slider-textbox-div">
+              <input type="range" id="lengthbattle-score-slider" min="2" max="100" value="10" step="1">
+              <input type="text" id="lengthbattle-score-slider-textbox" placeholder="0">
+            </div>
+          </div>
+          
+          <div class="universal-settings-buttons-div">          
+            <button class="button apply-changes-button">Apply Changes</button>
+            <button class="button reset-to-default-button">Reset to Default</button>
+            <button id="reset-highscore-button" class="button hidden-on-multiplayer">RESET HIGHSCORE</button>
+          </div>
+
         </div>
       </div>
 

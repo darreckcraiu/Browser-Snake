@@ -82,7 +82,8 @@ body {
 #rows-slider-textbox,
 #cols-slider-textbox,
 #UI-width-slider-textbox,
-#UI-height-slider-textbox {
+#UI-height-slider-textbox,
+#lengthbattle-score-slider-textbox {
   width: 8%;
   height: 30%;
   text-align: center;
@@ -103,13 +104,8 @@ body {
   margin-right: 4.5%;
 }
 
-.reset-to-default-button {
-  margin-top: 20px !important;
-}
-
 #reset-highscore-button {
-  margin-top: auto;
-  margin-bottom: 10%;
+  margin-top: 50%;
   color: rgb(219, 219, 219);
   background-color: rgb(163, 0, 0);
 }
@@ -187,4 +183,10 @@ body {
 .title-text,
 .subtitle-text {
   pointer-events: none;
+}
+
+.universal-settings-buttons-div {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
 }

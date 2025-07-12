@@ -202,7 +202,7 @@ export function updatePlayerScoreDiv(snakeID, score) {
   playerDiv.textContent = score;
 }
 export function disableButtons() {
-  //change the selected playerCount button
+  //'disable' the selected playerCount button
   const playerCountButtonsContainer = document.getElementById('playercount-buttons-container');
   const playerCountButtons = playerCountButtonsContainer.querySelectorAll('button');
   playerCountButtons.forEach(button => {
@@ -211,12 +211,13 @@ export function disableButtons() {
     }
   });
 
-  //change the selected gamemode button
-  const gamemodeButtonsContainer = document.getElementById('gamemode-buttons-container');
-  const gamemodeButtons = gamemodeButtonsContainer.querySelectorAll('.primary-gamemode-button');
-  gamemodeButtons.forEach(button => {
-    if (button.textContent === gamemode) {
-      button.classList.add('selected-button');
-    }
+  //'disable' the selected gamemode button
+  const buttonsDiv = document.getElementById(`${gamemode.toLowerCase()}-buttons-div`);
+  const buttons = buttonsDiv.querySelectorAll('button');
+  buttons.forEach(button => {
+    button.classList.add('selected-button');
+    //for the settings button, allow pointer events
+    if (button.textContent == '⚙️')
+      button.style.pointerEvents = 'auto';
   });
 }
