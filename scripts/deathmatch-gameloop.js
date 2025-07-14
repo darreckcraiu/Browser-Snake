@@ -1,23 +1,11 @@
-console.log('multiplayer js file running...');
 import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, gameContainerStyles, rows, cols } from "./config.js";
-import Grid from "./grid.js";
+import { universalGameSetup } from "./gameplaySetup.js";
 import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, hideMobileElements, hideSinglePlayerElements, drawApple, assignCellStyles, generateControlsUI, assignGamemodeText, generateScoresUI, updatePlayerScoreDiv, disableButtons } from "./utils.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, drawApple, assignCellStyles, updatePlayerScoreDiv } from "./utils.js";
+import { generateControlsUI, generateScoresUI } from "./gameplaySetup.js";
 
-//hide inappropriate elements from page
-hideMobileElements();
-hideSinglePlayerElements();
+universalGameSetup(); //run in each gameloop js file
 
-//disabled the selected buttons
-disableButtons();
-
-//title
-assignGamemodeText();
-
-const grid = new Grid(); //create grid
-
-//render starting grid
-grid.setupGrid();
 //create snakes/players and add them to the snakes js array
 let snakes = [];
 for (let i = 0; i < numOfPlayers; i++)
