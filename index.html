@@ -133,19 +133,19 @@
       
       //choose source file based on saved playermode and gamemode
       if (playermode === 'SINGLEPLAYER') {
-        script.src = "./scripts/gameloop.js";
+        script.src = "./scripts/singleplayer-gameloop.js";
       }
       else {
         switch (gamemode) {
-          case 'LENGTH BATTLE': script.src = "./scripts/gameloop-lengthbattle.js";
+          case 'LENGTH BATTLE': script.src = "./scripts/lengthbattle-gameloop.js";
           break;
-          case 'DEATHMATCH': script.src = "./scripts/gameloop-multiplayer.js";
+          case 'DEATHMATCH': script.src = "./scripts/deathmatch-gameloop.js";
           break;
-          default: script.src = "./scripts/gameloop-lengthbattle.js";
+        
+          default: script.src = "./scripts/lengthbattle-gameloop.js";
           break;
         }
       }
-
       document.body.appendChild(script);
     </script>
   </body>
