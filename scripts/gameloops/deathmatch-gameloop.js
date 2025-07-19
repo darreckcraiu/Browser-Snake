@@ -1,7 +1,8 @@
-import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, gameContainerStyles, rows, cols, lengthBattleScoreToWin } from "./config.js";
-import Snake from "./snake.js";
-import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, drawApple, assignCellStyles, updatePlayerScoreDiv } from "./utils.js";
-import { generateControlsUI, generateScoresUI, universalGameSetup } from "./gameplaySetup.js";
+import { snakeArrSize, gameloopInterval, numOfPlayers, playerControls, playerColors, gameContainerStyles, rows, cols } from "../config.js";
+import { universalGameSetup } from "../gameplaySetup.js";
+import Snake from "../snake.js";
+import { coordsEqual, coordToString, handleDirection, randomCoord, inSet, drawApple, assignCellStyles, updatePlayerScoreDiv } from "../utils.js";
+import { generateControlsUI, generateScoresUI } from "../gameplaySetup.js";
 
 universalGameSetup(); //run in each gameloop js file
 
@@ -73,27 +74,6 @@ setInterval(() => {
     }
   }
 
-  //attempt to respawn a snake this frame if needed
-  if (deadSnakesQueue.length !== 0) {
-    snakePtr = deadSnakesQueue[0] || null; //grab the front snake in the queue
-    console.log(snakePtr.hasLength())
-    
-    //ensure the snake only spawns in if it is completely erased from the map
-    if (!snakePtr.hasLength()) {
-      //try a spawn position for the snake and valid, spawn it 
-      const coord = randomCoord();
-      if (!inSet(coord, occupied)) {
-        deadSnakesQueue.shift(); //remove the front snake from the queue
-        snakePtr.reset();
-        updatePlayerScoreDiv(snakePtr.ID, snakePtr.score);
-        snakePtr.setCoordinatesOfSegment(coord, snakePtr.headIndex);
-        snakePtr.coordsSet.add(coordToString(coord));
-        occupied.add(coordToString(coord));
-      }
-    }
-
-  }
-
   //VISUALLY erase tails of all alive or currently dying snakes
   snakes.forEach(snake => {
     if (snake.alive)
@@ -111,25 +91,9 @@ setInterval(() => {
       occupied.delete(coordToString(appleCoord));
       snake.score++;
       updatePlayerScoreDiv(snake.ID, snake.score);
-      //check for win
-      if (snake.score === lengthBattleScoreToWin) {
-        clearInterval(intervalId); //stop the main game loop
-        intervalId = null;
-
-        //add in colored div of the winner in the endscreen
-        const winnerDiv = document.getElementById('multiplayer-winner-div');
-        winnerDiv.style.display = 'block';
-        winnerDiv.style.width = `${gameContainerStyles.width / cols}px`;
-        winnerDiv.style.height = `${gameContainerStyles.height / rows}px`;
-        assignCellStyles(winnerDiv, snake.cellStyle);
-
-        //display endscreen
-        const endscreen = document.querySelector('.endscreen');
-        endscreen.style.display = 'flex';
-      }
     }
     else {
-      //this is skipped for the snake that ate the apple and dead snakes
+      //this is skipped for the snake that ate the apple
       //erase the tail from occupied and advance the tail index
       occupied.delete(coordToString(snake.getCurrentTail()));
       snake.advanceTailIndex();
@@ -137,14 +101,13 @@ setInterval(() => {
   });
 
   //calculate new heads and check if any snake just killed itself as a result
-  snakes.forEach(snake => { 
+  snakes.forEach(snake => {
     if (snake.alive) {
       snake.dir = snake.nextDir; //update the snake's direction
       temp = snake.calculateNextHead();
       if (inSet(temp, snake.coordsSet)) {
         //if it hit itself
         snake.alive = false;
-        updatePlayerScoreDiv(snake.ID, 0);
         deadSnakesQueue.push(snake);
       }
       else {
@@ -170,13 +133,11 @@ setInterval(() => {
       //if the head of snakePtr makes contact with any part of snakes[j]
       if (snakes[j].alive && inSet(snakes[j].getCurrentHead(), snakePtr.coordsSet)) {
         snakes[j].alive = false;
-        updatePlayerScoreDiv(snakes[j].ID, 0);
         deadSnakesQueue.push(snakes[j]);
         //if their heads are what hit specifically. This extra check is to avoid a bug that lets one snake live anyway
         if (coordsEqual(snakePtr.getCurrentHead(), snakes[j].getCurrentHead())
           || coordsEqual(snakePtr.getCurrentHead(), snakes[j].coordsArr[snakes[j].headIndex - 1])) {
           snakePtr.alive = false;
-          updatePlayerScoreDiv(snakePtr.ID, 0);
           deadSnakesQueue.push(snakePtr);
         }
       }
@@ -188,6 +149,58 @@ setInterval(() => {
     if (snake.alive)
       snake.printHead();
   });
+  
+  //check for win (1 player left)
+  if (numOfPlayers - deadSnakesQueue.length <= 1) {
+    //stop main loop, show game over screen, and erase snake body piece by piece like an animation that accelerates as well
+    clearInterval(intervalId); //stop the main game loop
+    intervalId = null;
+
+    let timeoutInterval = 150;
+    //recursive function
+    function eraseTailWithAcceleration() {
+      // this if statement only runs if the tail hasn't caught up to the head yet
+      snakes.forEach(snake => {
+        if (!snake.alive && snake.hasLength()) {
+          snake.eraseTail();
+          snake.advanceTailIndex();
+
+          // Accelerate
+          timeoutInterval = Math.max(timeoutInterval * 0.9, 30);
+
+          setTimeout(eraseTailWithAcceleration, timeoutInterval);
+        }
+      });
+    }
+    eraseTailWithAcceleration(); // Start it
+    
+    //get the winning snake
+    let winnerSnake = -1;
+    for (let i = 0; i < numOfPlayers; i++) {
+      if (snakes[i].alive) {
+        winnerSnake = snakes[i];
+        break;
+      }
+    }
+
+    //add in colored grid square of winner in endscreen
+    if (winnerSnake !== -1) {
+      const winnerDiv = document.getElementById('multiplayer-winner-div');
+      winnerDiv.style.display = 'block';
+      winnerDiv.style.width = `${gameContainerStyles.width / cols}px`;
+      winnerDiv.style.height = `${gameContainerStyles.height / rows}px`;
+      assignCellStyles(winnerDiv, winnerSnake.cellStyle);
+    }
+    else {
+      //tie game
+      const endText = document.getElementById('multiplayer-winner-text');
+      endText.textContent = 'TIE GAME';
+    }    
+
+    //display endscreen
+    const endscreen = document.querySelector('.endscreen');
+    endscreen.style.display = 'flex';
+  }
   
 }, gameloopInterval);
 

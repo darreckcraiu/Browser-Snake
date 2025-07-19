@@ -1,7 +1,7 @@
-import { rows,cols, snakeArrSize, gameloopInterval } from "./config.js";
-import Snake from "./snake.js";
-import { coordToString, handleDirection, randomCoord, inSet, drawApple } from "./utils.js";
-import { universalGameSetup, } from "./gameplaySetup.js";
+import { rows,cols, snakeArrSize, gameloopInterval } from "../config.js";
+import Snake from "../snake.js";
+import { coordToString, handleDirection, randomCoord, inSet, drawApple } from "../utils.js";
+import { universalGameSetup, } from "../gameplaySetup.js";
 
 const highscore = localStorage.getItem('highscore') !== null ?
 localStorage.getItem('highscore') : 1;
