@@ -1,0 +1,25 @@
+html, 
+body {
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* full window height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: rgb(5, 41, 43);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.hidden {
+  display: none !important; /* hide object */
+}
+.title-text,
+.subtitle-text {
+  pointer-events: none;
+}

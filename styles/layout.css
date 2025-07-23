@@ -1,3 +1,4 @@
+/* PANELS */
 .center-panel {
   display: flex;
   position: relative; /*will position its children relative to itself*/
@@ -78,28 +79,17 @@
 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-
-
 }
 
-#playermode-button {
-  background-color: blueviolet;
-}
-#playermode-button:hover {
-  background-color: rgb(158, 57, 252);
-}
-
-#settings-button {
-  background-color: rgb(206, 206, 6);
-}
-#settings-button:hover {
-  background-color: rgb(231, 231, 44);
+/* DIVS */
+.rows-cols-div {
+  display: flex;
+  justify-content: horizontal;
 }
 
-#playercount-label {
-  width: 100%;
+.rows-cols-div button {
+  margin-left: auto;
 }
-
 #playercount-div,
 #gamemodes-div,
 #scores-container {
@@ -108,26 +98,9 @@
   gap: 10px;
 }
 
-#playercount-buttons-container {
+#player-scores-div {
   display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  gap: 5px;
-}
-
-#playercount-buttons-container button {
-  width: 90%;
-  height: 100%;
-}
-
-#gamemode-buttons-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  gap: 7px;
+  justify-content: space-evenly;
 }
 
 #gamemode-buttons-container div {
@@ -138,27 +111,29 @@
   gap: 5px;
 }
 
-#gamemode-buttons-container .primary-gamemode-button {
-  width: 80%;
+.player-rep-div {
+  width: 50px;
+  height: 50px;
+  color: black;
 }
 
-#gamemode-buttons-container button {
-  height: 100%;
+.controlkeys-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  grid-template-rows: repeat(2, 60px);
 }
-
-.gear-button {
+.controlkeys-grid div {
+  background-color: rgb(170, 170, 170);
+  text-align: center;
+  border: 1px solid white;
+  margin: 1px;
+}
+.slider-textbox-div {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 18%;
 }
 
-#player-scores-div {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.label {
-  text-align: center;
+#multiplayer-winner-div {
+  margin-right: 30px;
 }
