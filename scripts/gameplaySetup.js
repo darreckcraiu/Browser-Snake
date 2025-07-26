@@ -1,7 +1,7 @@
 import { playermode, playerControls, gamemode, gameContainerStyles, numOfPlayers, gamemodeDescriptionMap } from "./config.js";
 import { assignCellStyles } from "./utils.js";
 import Grid from "./grid.js";
-import { scaleFonts } from "./grid.js";
+import { scaleFonts } from "./ui.js"
 
 //this function is called early in every gameloop file
 export function universalGameSetup() {
