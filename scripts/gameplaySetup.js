@@ -5,8 +5,9 @@ import { scaleFonts } from "./ui.js"
 
 //this function is called early in every gameloop file
 export function universalGameSetup() {
-  //mobile/small screen devices
-  if (window.innerWidth < 1000)
+  //mobile devices devices
+  if (window.matchMedia('(pointer: coarse)').matches &&
+    !window.matchMedia('(hover: hover)').matches)
     hideDesktopElements();
   else
     hideMobileElements();

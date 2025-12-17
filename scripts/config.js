@@ -5,8 +5,9 @@ export const playermode = localStorage.getItem('playermode') || 'SINGLEPLAYER'; 
 //default grid settings values
 const defaultRows = 12;
 const defaultCols = 12;
-const defaultWidth = 700;
-const defaultHeight = 700;
+const screenSmallestDimension = Math.min(window.innerHeight, window.innerWidth);
+const defaultWidth = screenSmallestDimension / 1.5;
+const defaultHeight = screenSmallestDimension / 1.5;
 
 export const rows = settings && Number(settings.rows) || defaultRows;
 export const cols = settings && Number(settings.cols) || defaultCols;
