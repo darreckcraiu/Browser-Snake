@@ -8,7 +8,6 @@ export default class AIController {
         this.config = config;        // difficulty / tuning parameters
 
         this.states = {};
-        this.currentState = null;
         this.pendingState = null;
 
         this.desiredDirection = null; // output for this tick
@@ -58,39 +57,8 @@ export default class AIController {
         this.desiredDirection = direction;
     }
 
-    getCurrentState() {
-        return this.currentState;
+    getCurrentStateName() {
+        return this.currentState.name;
     }
 
-}
-
-
-function headAndAppleShareCol(snakeHeadCoords, appleCoords) {
-    return (snakeHeadCoords.x === appleCoords.x);
-}
-
-function headAndAppleShareRow(snakeHeadCoords, appleCoords) {
-    return (snakeHeadCoords.y === appleCoords.y);
-}
-
-function directionToApple(snakeHeadCoords, appleCoords) {
-    if (headAndAppleShareCol(snakeHeadCoords, appleCoords)) {
-        if (snakeHeadCoords.y >= appleCoords.y) {
-            return "up";
-        }
-        else {
-            return "down";
-        }
-    }
-    else if (headAndAppleShareRow(snakeHeadCoords, appleCoords)) {
-        if (snakeHeadCoords.x >= appleCoords.x) {
-            return "left";
-        }
-        else {
-            return "right";
-        }     
-    }
-    else {
-        return null;
-    }
 }
