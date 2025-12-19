@@ -4,7 +4,8 @@ export default class ChaseFoodState extends AIState {
     name = "CHASE_FOOD";
     
     enter(controller) {
-
+        const sensors = controller.sensors;
+        controller.setDesiredDirection(sensors.getDirectionToFood());
     }
 
     update(controller) {
