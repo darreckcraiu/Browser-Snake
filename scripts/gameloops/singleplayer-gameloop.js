@@ -81,6 +81,7 @@ setInterval(() => {
   }
 
   //calculate next head and whether it kills the snake or not
+  handleDirection(aiController.getDesiredDirection(), snake.dir, snake);
   snake.dir = snake.nextDir;
   temp = snake.calculateNextHead();
   if (inSet(temp, snake.coordsSet)) {

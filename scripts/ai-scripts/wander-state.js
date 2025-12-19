@@ -1,10 +1,17 @@
+import { getRandomArbitrary } from '../utils.js';
 import AIState from './ai-state.js'
 
 export default class WanderState extends AIState {
     name = "WANDER";
     
     enter(controller) {
-        controller.setDesiredDirection("right");
+        const randomNum = getRandomArbitrary(0,2);
+        if (randomNum === 0) {
+            controller.setDesiredDirection("rightDir");
+        }
+        else {
+            controller.setDesiredDirection("upDir");
+        }
     }
 
     update(controller) {
@@ -16,7 +23,13 @@ export default class WanderState extends AIState {
             return;
         }
         else {
-            controller.setDesiredDirection("right");
+            const randomNum = getRandomArbitrary(0,2);
+            if (randomNum === 0) {
+                controller.setDesiredDirection("rightDir");
+            }
+            else {
+                controller.setDesiredDirection("upDir");
+            }
         }
 
     }

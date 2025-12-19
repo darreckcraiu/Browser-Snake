@@ -16,11 +16,11 @@ export default class AISensors {
         const apple = this.applePosition;
 
         if (head.x === apple.x) {
-            return head.y >= apple.y ? "up" : "down";
+            return head.y >= apple.y ? "upDir" : "downDir";
         }
 
         if (head.y === apple.y) {
-            return head.x >= apple.x ? "left" : "right";
+            return head.x >= apple.x ? "leftDir" : "rightDir";
         }
 
         return null;
