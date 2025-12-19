@@ -1,14 +1,17 @@
 import { rows, cols, foodColor } from "./config.js";
 
-export function coordToString(coord) {
-  return `${coord.y}_${coord.x}`;
+export function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
 }
 //returns a random coordinate that is valid with the rows and cols
 export function randomCoord() {
   return {
-    y: Math.floor(Math.random() * (rows)),
-    x: Math.floor(Math.random() * (cols))
+    y: getRandomArbitrary(0, rows),
+    x: getRandomArbitrary(0, cols)
   }
+}
+export function coordToString(coord) {
+  return `${coord.y}_${coord.x}`;
 }
 export function isTouchDevice() {
   return 'ontouchstart' in window || navigator.maxTouchPoints > 0;

@@ -26,17 +26,17 @@ let appleCoord = {
   x: -1
 }
 
-//random start for snake
+
 temp = randomCoord();
 snake.setCoordinatesOfSegment(temp, snake.headIndex);
 snake.coordsSet.add(coordToString(temp));
 
-//random start for food
+
 do {
   appleCoord = randomCoord();
 } while (inSet(appleCoord, snake.coordsSet))
 
-//print food
+
 drawApple(appleCoord);
 
 const aiSensors = new AISensors(snake.getCurrentHead(), appleCoord);
@@ -92,6 +92,11 @@ setInterval(() => {
     snake.setCoordinatesOfSegment(temp, snake.headIndex); //update change in snake array
   }
 
+  aiSensors.update(snake.getCurrentHead(), appleCoord);
+  aiController.update();
+  console.log(aiController.getCurrentStateName());
+  console.log(aiController.getDesiredDirection());
+
   //print new head if snake is alive
   if (snake.alive)
     snake.printHead();
@@ -122,11 +127,6 @@ setInterval(() => {
     if (snake.score > highscore)
       localStorage.setItem('highscore', `${snake.score}`);
   }
-
-  aiSensors.update(snake.getCurrentHead(), appleCoord);
-  aiController.update();
-  console.log(aiController.getCurrentStateName());
-  console.log(aiController.getDesiredDirection());
   
 }, gameloopInterval);
 
