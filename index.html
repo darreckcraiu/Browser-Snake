@@ -136,13 +136,13 @@
       
       //choose source file based on saved playermode and gamemode
       if (playermode === 'SINGLEPLAYER') {
-        script.src = "./scripts/gameloops/singleplayer-gameloop.js";
+        script.src = "./scripts/gameloops/singleplayer-gameloop_.js";
       }
       else {
         switch (gamemode) {
           case 'LENGTH BATTLE': script.src = "./scripts/gameloops/lengthbattle-gameloop.js";
           break;
-          case 'DEATHMATCH': script.src = "./scripts/gameloops/deathmatch-with-bots-gameloop.js";
+          case 'DEATHMATCH': script.src = "./scripts/gameloops/deathmatch-gameloop.js";
           break;
         
           default: script.src = "./scripts/gameloops/lengthbattle-gameloop.js";

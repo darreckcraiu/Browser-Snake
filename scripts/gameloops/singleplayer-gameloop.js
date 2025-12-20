@@ -1,6 +1,6 @@
-import { rows,cols, snakeArrSize, gameloopInterval } from "../config.js";
+import { snakeArrSize, gameloopInterval } from "../config.js";
 import Snake from "../snake.js";
-import { coordToString, handleDirection, randomCoord, inSet, drawApple } from "../utils.js";
+import { coordToString, handleDirection, randomCoord, inSet, drawApple, getRandomArbitrary } from "../utils.js";
 import { universalGameSetup, } from "../gameplaySetup.js";
 
 const highscore = localStorage.getItem('highscore') !== null ?
@@ -43,8 +43,7 @@ setInterval(() => {
   console.log('loop counter');
   //respawn food if neccessary
   if (appleCoord.y === -1) {
-    appleCoord.y = Math.floor(Math.random() * (rows));
-    appleCoord.x = Math.floor(Math.random() * (cols));
+    appleCoord = randomCoord();
     //verify new coord
     if (inSet(appleCoord, snake.coordsSet))
       appleCoord.y = -1;
