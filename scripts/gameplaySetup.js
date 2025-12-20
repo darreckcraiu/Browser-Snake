@@ -81,17 +81,17 @@ export function generateControlsUI(snakes) {
   scaleFonts();
 
   function centerControlKeyDivText() {
-  const controlGrids = document.querySelectorAll('.controlkeys-grid');
-  controlGrids.forEach(grid => {
-    const controlDivs = grid.querySelectorAll('div');
+    const controlGrids = document.querySelectorAll('.controlkeys-grid');
+    controlGrids.forEach(grid => {
+      const controlDivs = grid.querySelectorAll('div');
 
-    controlDivs.forEach(div => {
-      div.style.display = 'flex';
-      div.style.alignItems = 'center';      // vertical centering
-      div.style.justifyContent = 'center';  // horizontal centering
+      controlDivs.forEach(div => {
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';      // vertical centering
+        div.style.justifyContent = 'center';  // horizontal centering
+      });
     });
-  });
-}
+  }
 }
 //generates the html for the controls UI
 export function generateScoresUI(snakes) {
@@ -112,14 +112,14 @@ export function generateScoresUI(snakes) {
   //assign styles and size to the player rep divs
   const sizingNum = gameContainerStyles.width / 12; //for sizing that comes next
 
-  snakes.forEach((snake, i) => {
+  for (let i = 0; i < numOfPlayers; i++) {
     if (i < playerControls.length) {
       const playerRepDiv = document.querySelector(`.player${i + 1}-rep-div`);
-      assignCellStyles(playerRepDiv, snake.cellStyle);
+      assignCellStyles(playerRepDiv, snakes[i].cellStyle);
       playerRepDiv.style.width = `${sizingNum}px`;
       playerRepDiv.style.height = `${sizingNum}px`;
-    }
-  });
+    } 
+  }
 
   configurePlayerRepDivs(snakes);
   scaleFonts();
@@ -172,15 +172,14 @@ function hideMultiplayerElements() {
 function configurePlayerRepDivs(snakes) {
   const sizingNum = gameContainerStyles.width / 12; //for sizing that comes next
 
-  //specific to each snake
-  snakes.forEach((snake, i) => {
+  for (let i = 0; i < numOfPlayers; i++) {
     if (i < playerControls.length) {
       const playerRepDiv = document.querySelector(`.player${i + 1}-rep-div`);
-      assignCellStyles(playerRepDiv, snake.cellStyle);
+      assignCellStyles(playerRepDiv, snakes[i].cellStyle);
       playerRepDiv.style.width = `${sizingNum}px`;
       playerRepDiv.style.height = `${sizingNum}px`;
-    }
-  });
+    }   
+  }
 
   //general for all player rep divs
   const playerRepDivs = document.querySelectorAll('.player-rep-div');
