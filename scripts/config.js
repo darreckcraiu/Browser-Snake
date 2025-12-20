@@ -8,6 +8,7 @@ const defaultCols = 12;
 const screenSmallestDimension = Math.min(window.innerHeight, window.innerWidth);
 const defaultWidth = screenSmallestDimension / 1.5;
 const defaultHeight = screenSmallestDimension / 1.5;
+const defaultNumOfBots = 1;
 
 export const rows = settings && Number(settings.rows) || defaultRows;
 export const cols = settings && Number(settings.cols) || defaultCols;
@@ -27,12 +28,15 @@ export const cellStyles = {
 export const gridBorderColor = 'rgb(255, 255, 255)';
 export const gameloopInterval = window.innerWidth > 1000 ? 120 : 150;
 
+export const numOfBots = parseInt(localStorage.getItem('numOfBots')) || defaultNumOfBots;
+
 //save settings to local storage
 localStorage.setItem('settings', JSON.stringify({
   rows: rows,
   cols: cols,
   width: gameContainerStyles.width,
-  height: gameContainerStyles.height
+  height: gameContainerStyles.height,
+  numOfBots: numOfBots
 }));
 
 
