@@ -2,8 +2,6 @@ import { rows,cols, snakeArrSize, gameloopInterval } from "../config.js";
 import Snake from "../snake.js";
 import { coordToString, handleDirection, randomCoord, inSet, drawApple } from "../utils.js";
 import { universalGameSetup, } from "../gameplaySetup.js";
-import AIController from "../ai-scripts/ai-controller.js";
-import AISensors from "../ai-scripts/ai-sensors.js";
 
 const highscore = localStorage.getItem('highscore') !== null ?
 localStorage.getItem('highscore') : 1;
@@ -26,30 +24,23 @@ let appleCoord = {
   x: -1
 }
 
-
+//random start for snake
 temp = randomCoord();
 snake.setCoordinatesOfSegment(temp, snake.headIndex);
 snake.coordsSet.add(coordToString(temp));
 
-
+//random start for food
 do {
   appleCoord = randomCoord();
 } while (inSet(appleCoord, snake.coordsSet))
 
-
+//print food
 drawApple(appleCoord);
-
-const aiSensors = new AISensors(snake.getCurrentHead(), appleCoord);
-const aiController = new AIController(aiSensors, null);
-aiController._initStates();
-aiController._setInitialState();
 
 //game loop
 const intervalId = 
 setInterval(() => {
-  //console.log('loop counter');
-  
-  
+  console.log('loop counter');
   //respawn food if neccessary
   if (appleCoord.y === -1) {
     appleCoord.y = Math.floor(Math.random() * (rows));
@@ -81,7 +72,6 @@ setInterval(() => {
   }
 
   //calculate next head and whether it kills the snake or not
-  handleDirection(aiController.getDesiredDirection(), snake.dir, snake);
   snake.dir = snake.nextDir;
   temp = snake.calculateNextHead();
   if (inSet(temp, snake.coordsSet)) {
@@ -92,11 +82,6 @@ setInterval(() => {
     snake.headIndex = (snake.headIndex + 1) % snakeArrSize; //advance head index
     snake.setCoordinatesOfSegment(temp, snake.headIndex); //update change in snake array
   }
-
-  aiSensors.update(snake.getCurrentHead(), appleCoord);
-  aiController.update();
-  console.log(aiController.getCurrentStateName());
-  console.log(aiController.getDesiredDirection());
 
   //print new head if snake is alive
   if (snake.alive)
